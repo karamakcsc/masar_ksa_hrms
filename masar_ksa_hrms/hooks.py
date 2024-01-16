@@ -226,4 +226,27 @@ app_license = "mit"
 # default_log_clearing_doctypes = {
 # 	"Logging DocType Name": 30  # days to retain logs
 # }
-
+fixtures = [
+    {"dt": "Custom Field", "filters": [
+        [
+            "name", "in", [
+    			"Employee-custom_nationality",
+                "Employee-custom_is_overtime_applicable",
+                "Employee-custom_overtime_details",
+                "Salary Component-custom_is_overtime_applicable"
+                  ]
+        ]
+    ]}
+    # {
+    #     "doctype": "Property Setter",
+    #     "filters": [
+    #         [
+    #             "name",
+    #             "in",
+    #             [
+    #                 "Payment Entry-payment_type-options"
+    #             ]
+    #         ]
+    #     ]
+    # }
+]
