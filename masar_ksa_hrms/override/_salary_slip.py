@@ -47,7 +47,7 @@ from erpnext.accounts.utils import get_fiscal_year
 # 	get_period_factor,
 # )
 # from hrms.payroll.doctype.salary_slip.salary_slip import SalarySlip
-from hrms.payroll.doctype.salary_slip.salary_slip import calculate_lwp_ppl_and_absent_days_based_on_attendance
+from hrms.hr.payroll.doctype.salary_slip.salary_slip import calculate_lwp_ppl_and_absent_days_based_on_attendance
 
 
 def get_working_days_details(self, lwp=None, for_preview=0):
