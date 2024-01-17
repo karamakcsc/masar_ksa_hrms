@@ -135,3 +135,58 @@ def get_working_days_details(self, lwp=None, for_preview=0):
             self.payment_days -= unmarked_days
     else:
         self.payment_days = 0
+
+def calculate_lwp_ppl_and_absent_days_based_on_attendance(
+    self, holidays, daily_wages_fraction_for_half_day, consider_marked_attendance_on_holidays
+):
+    lwp = 0
+    absent = 0
+
+    leave_type_map = self.get_leave_type_map()
+    attendance_details = self.get_employee_attendance(
+        start_date=self.start_date, end_date=self.actual_end_date
+    )
+
+    for d in attendance_details:
+        if (
+            d.status in ("Half Day", "On Leave")
+            and d.leave_type
+            and d.leave_type not in leave_type_map.keys()
+        ):
+            continue
+
+        # skip counting absent on holidays
+        if not consider_marked_attendance_on_holidays and getdate(d.attendance_date) in holidays:
+            if d.status == "Absent" or (
+                d.leave_type
+                and d.leave_type in leave_type_map.keys()
+                and not leave_type_map[d.leave_type]["include_holiday"]
+            ):
+                continue
+
+        if d.leave_type:
+            fraction_of_daily_salary_per_leave = leave_type_map[d.leave_type][
+                "fraction_of_daily_salary_per_leave"
+            ]
+
+        if d.status == "Half Day":
+            equivalent_lwp = 1 - daily_wages_fraction_for_half_day
+
+            if d.leave_type in leave_type_map.keys() and leave_type_map[d.leave_type]["is_ppl"]:
+                equivalent_lwp *= (
+                    fraction_of_daily_salary_per_leave if fraction_of_daily_salary_per_leave else 1
+                )
+            lwp += equivalent_lwp
+
+        elif d.status == "On Leave" and d.leave_type and d.leave_type in leave_type_map.keys():
+            equivalent_lwp = 1
+            if leave_type_map[d.leave_type]["is_ppl"]:
+                equivalent_lwp *= (
+                    fraction_of_daily_salary_per_leave if fraction_of_daily_salary_per_leave else 1
+                )
+            lwp += equivalent_lwp
+
+        elif d.status == "Absent":
+            absent += 1
+
+    return lwp, absent
