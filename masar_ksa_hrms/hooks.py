@@ -122,13 +122,26 @@ app_license = "mit"
 # ---------------
 # Hook on document methods and events
 
-# doc_events = {
-# 	"*": {
-# 		"on_update": "method",
-# 		"on_cancel": "method",
-# 		"on_trash": "method"
-# 	}
-# }
+doc_events = {
+	"Salary Component": {
+		"validate": "masar_ksa_hrms.custom.salary_component.salary_component.validate",
+	} ,
+    "Employee" : { 
+        "validate":"masar_ksa_hrms.custom.employee.employee.validate",
+    },
+    "Shift Type" : {
+        "validate":"masar_ksa_hrms.custom.shift_type.shift_type.validate",
+    },
+    "Company":{
+        "validate":"masar_ksa_hrms.custom.company.company.validate",
+    }
+}
+doctype_js = {
+    "Employee": "custom/employee/employee.js"
+}
+doctype_list_js = {
+    "Attendance Shortage" : "masar_ksa_hrms/doctype/attendance_shortage/attendance_shortage_list.js"
+    }
 
 # Scheduled Tasks
 # ---------------
@@ -230,28 +243,72 @@ fixtures = [
     {"dt": "Custom Field", "filters": [
         [
             "name", "in", [
-    			"Employee-custom_nationality",
-                "Employee-custom_is_overtime_applicable",
+                "Salary Component-custom_is_overtime_applicable", 
+                "Salary Component-custom_formula_check",
+                "Salary Component-custom_is_ss_applicable",
+                "Salary Component-custom_salary_deduction",
+                "Salary Component-custom_is_eos_applicable",
+                "Employee-custom_nationality",
                 "Employee-custom_overtime_details",
-                "Salary Component-custom_is_overtime_applicable"
-                  ]
+                "Employee-custom_is_overtime_applicable",
+                "Employee-custom_salary_components", 
+                "Employee-custom_employee_salary_component",
+                "Employee-custom_social_security_details", 
+                "Employee-custom__is_ss_applicable",
+                "Employee-custom_ss_number",
+                "Employee-custom_nationality_number" ,
+                "Employee-custom_citizen_number",
+                "Employee-custom_salaries" , 
+                "Employee-custom_basic_salary" ,
+                "Employee-custom_salary_deduction",
+                "Employee-custom_column_break_xom87",
+                "Employee-custom_basic_salary_with_allowance",
+                "Employee-custom_eos_salary",
+                "Shift Assignment-custom_employee_shift_management",
+                "Company-custom_end_of_service_info",
+                "Company-custom_comp_eos_table",
+                "Company-custom_end_of_service_accounts",
+                "Company-custom_end_of_service_expenses",
+                "Company-custom_column_break_udaic",
+                "Company-custom_end_of_service_liabilities",
+                "Company-custom_salary", 
+                "Company-custom_social_security_info" , 
+                "Company-custom_salary_component" , 
+                "Company-custom_social_security_info", 
+                "Company-custom_saudi_arabia_info", 
+                "Company-custom_comp_ss_sa_rate", 
+                "Company-custom_emp_ss_sa_rate", 
+                "Company-custom_column_break_62qlj", 
+                "Company-custom_other_nationality_info", 
+                "Company-custom_comp_ss_other_rate", 
+                "Company-custom_emp_ss_other_rate", 
+                "Company-custom_emp_ss_other_rate", 
+                "Company-custom_ss_expenses", 
+                "Company-custom_column_break_syuvv", 
+                "Company-custom_ss_liabilities", 
+                "Shift Type-custom_grace_period_settings_overtime_section",
+                "Shift Type-custom_enable_early_entry_marking" , 
+                "Shift Type-custom_early_entry_grace_period",
+                "Shift Type-custom_column_break_wzcol", 
+                "Shift Type-custom_enable_late_exit_marking",
+                "Shift Type-custom_late_exit_grace_period",
+                # "Shift Type-custom_30_working_day",
+                "Attendance-custom_att_pro_ref",
+                "Leave Type-custom_salary_deduction",
+                "Leave Type-custom_balance_deduction",
+                "Leave Type-custom_salary_deduction_rate", 
+                "Leave Application-custom_sla_reference"
+                ]
         ]
+    ]},
+    {"dt": "Payroll Settings", "filters": [
+            {
+                "doctype": "Payroll Settings", 
+                "value": 0, 
+                "fieldname": "working_day_30" ,
+                "fieldtype": "Check", 
+                "label": "Working Day 30"
+            }
     ]}
-    # {
-    #     "doctype": "Property Setter",
-    #     "filters": [
-    #         [
-    #             "name",
-    #             "in",
-    #             [
-    #                 "Payment Entry-payment_type-options"
-    #             ]
-    #         ]
-    #     ]
-    # }
+
 ]
-
-
-from masar_ksa_hrms.override import _salary_slip
-from hrms.payroll.doctype.salary_slip.salary_slip import SalarySlip
-SalarySlip.get_working_days_details = _salary_slip.get_working_days_details

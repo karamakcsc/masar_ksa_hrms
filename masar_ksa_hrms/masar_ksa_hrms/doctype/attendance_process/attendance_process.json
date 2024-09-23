@@ -1,0 +1,539 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "naming_series:",
+ "creation": "2024-08-26 14:33:49.367329",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "employee",
+  "employee_name",
+  "department",
+  "column_break_vxwi",
+  "company",
+  "posting_date",
+  "bulk_reference",
+  "section_break_dhyj",
+  "from_date",
+  "column_break_erpw",
+  "to_date",
+  "salary_details_section",
+  "working_day",
+  "basic_salary",
+  "basic_salary_with_allowances",
+  "leaves_salary",
+  "column_break_ahwf",
+  "bs_hour_rate",
+  "bswa_hour_rate",
+  "leaves_hour_rate",
+  "section_break_sare",
+  "amended_from",
+  "naming_series",
+  "column_break_elpm",
+  "set_salary_component",
+  "overtime_tab",
+  "overtime_for_working_day_section",
+  "overtime_type_nd",
+  "overtime_rate_nd",
+  "add_sal_nd",
+  "column_break_eebl",
+  "sc_overtime_nd",
+  "overtime_nd",
+  "amount_nd",
+  "overtime_for_off_day_section",
+  "overtime_type_od",
+  "overtime_rate_od",
+  "add_sal_od",
+  "column_break_mfgo",
+  "sc_overtime_od",
+  "overtime_od",
+  "amount_od",
+  "overtime_for_holidays_section",
+  "overtime_type_hd",
+  "overtime_rate_hd",
+  "add_sal_hd",
+  "column_break_yxaa",
+  "sc_overtime_hd",
+  "overtime_hd",
+  "amount_hd",
+  "overtime_total_section",
+  "total_nd",
+  "total_od",
+  "column_break_vesz",
+  "total_hd",
+  "ot_total_amount",
+  "overtime_details_section",
+  "overtime_details",
+  "short_leaves_tab",
+  "leaves_details_section",
+  "leaves_table",
+  "total_amount_section",
+  "column_break_aoro",
+  "column_break_mfys",
+  "total_amount",
+  "connections_tab",
+  "remove_linked_attendance",
+  "column_break_rvdg",
+  "get_linked_attendance"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_sare",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Attendance Process",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "employee",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Employee",
+   "options": "Employee",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "employee.employee_name",
+   "fieldname": "employee_name",
+   "fieldtype": "Data",
+   "label": "Employee Name",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "employee.department",
+   "fieldname": "department",
+   "fieldtype": "Data",
+   "label": "Department",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_vxwi",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Company",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "default": "Today",
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Posting Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_dhyj",
+   "fieldtype": "Section Break",
+   "label": "Date Details"
+  },
+  {
+   "fieldname": "from_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "From Date",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_erpw",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "to_date",
+   "fieldtype": "Date",
+   "label": "To Date",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "overtime_tab",
+   "fieldtype": "Tab Break",
+   "label": "Overtime"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "overtime_for_working_day_section",
+   "fieldtype": "Section Break",
+   "label": "Overtime For Normal Day"
+  },
+  {
+   "fieldname": "column_break_eebl",
+   "fieldtype": "Column Break"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "overtime_for_off_day_section",
+   "fieldtype": "Section Break",
+   "label": "Overtime For Off Day"
+  },
+  {
+   "fieldname": "overtime_type_od",
+   "fieldtype": "Link",
+   "label": "Overtime Type",
+   "options": "Overtime Type",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "overtime_type_od.rate",
+   "fieldname": "overtime_rate_od",
+   "fieldtype": "Float",
+   "label": "Overtime Rate",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_mfgo",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "overtime_type_od",
+   "fieldname": "sc_overtime_od",
+   "fieldtype": "Link",
+   "label": "Salary Component",
+   "mandatory_depends_on": "amount_od",
+   "options": "Salary Component"
+  },
+  {
+   "fieldname": "overtime_od",
+   "fieldtype": "Duration",
+   "label": "Overtime",
+   "read_only": 1
+  },
+  {
+   "fieldname": "amount_od",
+   "fieldtype": "Float",
+   "label": "Amount",
+   "read_only": 1
+  },
+  {
+   "fieldname": "overtime_type_nd",
+   "fieldtype": "Link",
+   "label": "Overtime Type",
+   "options": "Overtime Type",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "overtime_type_nd.rate",
+   "fieldname": "overtime_rate_nd",
+   "fieldtype": "Float",
+   "label": "Overtime Rate",
+   "read_only": 1
+  },
+  {
+   "depends_on": "overtime_type_nd",
+   "fieldname": "sc_overtime_nd",
+   "fieldtype": "Link",
+   "label": "Salary Component",
+   "mandatory_depends_on": "amount_nd",
+   "options": "Salary Component"
+  },
+  {
+   "fieldname": "overtime_nd",
+   "fieldtype": "Duration",
+   "label": "Overtime",
+   "read_only": 1
+  },
+  {
+   "fieldname": "amount_nd",
+   "fieldtype": "Float",
+   "label": "Amount",
+   "read_only": 1
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "overtime_for_holidays_section",
+   "fieldtype": "Section Break",
+   "label": "Overtime For Holidays"
+  },
+  {
+   "fieldname": "overtime_type_hd",
+   "fieldtype": "Link",
+   "label": "Overtime Type",
+   "options": "Overtime Type",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "overtime_type_hd.rate",
+   "fieldname": "overtime_rate_hd",
+   "fieldtype": "Float",
+   "label": "Overtime Rate",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_yxaa",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "overtime_hd",
+   "fieldtype": "Duration",
+   "label": "Overtime",
+   "read_only": 1
+  },
+  {
+   "fieldname": "amount_hd",
+   "fieldtype": "Float",
+   "label": "Amount",
+   "read_only": 1
+  },
+  {
+   "fieldname": "overtime_total_section",
+   "fieldtype": "Section Break",
+   "label": "Overtime Total"
+  },
+  {
+   "default": "0",
+   "fieldname": "total_nd",
+   "fieldtype": "Float",
+   "label": "Normal Day Amount",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "total_od",
+   "fieldtype": "Float",
+   "label": "Off Day Amount",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "total_hd",
+   "fieldtype": "Float",
+   "label": "Holidays Amount",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_vesz",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "ot_total_amount",
+   "fieldtype": "Float",
+   "label": "Total Amount",
+   "read_only": 1
+  },
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "hidden": 1,
+   "label": "Series",
+   "options": "ATT-PRO-.YYYY.-"
+  },
+  {
+   "fieldname": "salary_details_section",
+   "fieldtype": "Section Break",
+   "label": "Salary Details"
+  },
+  {
+   "fieldname": "working_day",
+   "fieldtype": "Float",
+   "label": "Working Day",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_ahwf",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "basic_salary",
+   "fieldtype": "Float",
+   "label": "Basic Salary",
+   "read_only": 1
+  },
+  {
+   "fieldname": "basic_salary_with_allowances",
+   "fieldtype": "Float",
+   "label": "Basic Salary with Allowances (Overtime)",
+   "read_only": 1
+  },
+  {
+   "fieldname": "bs_hour_rate",
+   "fieldtype": "Float",
+   "label": "Basic Salary Hour Rate",
+   "read_only": 1
+  },
+  {
+   "fieldname": "bswa_hour_rate",
+   "fieldtype": "Float",
+   "label": "Basic Salary with Allowances Hour Rate",
+   "read_only": 1
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "overtime_details_section",
+   "fieldtype": "Section Break",
+   "label": "Overtime Details"
+  },
+  {
+   "fieldname": "overtime_details",
+   "fieldtype": "Table",
+   "label": "Overtime Details",
+   "options": "Attendance Process Overtime Details",
+   "read_only": 1
+  },
+  {
+   "depends_on": "overtime_type_hd",
+   "fieldname": "sc_overtime_hd",
+   "fieldtype": "Link",
+   "label": "Salary Component",
+   "mandatory_depends_on": "amount_hd",
+   "options": "Salary Component"
+  },
+  {
+   "default": "0",
+   "fieldname": "set_salary_component",
+   "fieldtype": "Check",
+   "hidden": 1,
+   "label": "Set Salary Component"
+  },
+  {
+   "fieldname": "column_break_elpm",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "add_sal_nd",
+   "fieldtype": "Link",
+   "label": "Additional Salary",
+   "options": "Additional Salary",
+   "read_only": 1
+  },
+  {
+   "fieldname": "add_sal_od",
+   "fieldtype": "Link",
+   "label": "Additional Salary",
+   "options": "Additional Salary",
+   "read_only": 1
+  },
+  {
+   "fieldname": "add_sal_hd",
+   "fieldtype": "Link",
+   "label": "Additional Salary",
+   "options": "Additional Salary",
+   "read_only": 1
+  },
+  {
+   "fieldname": "connections_tab",
+   "fieldtype": "Tab Break",
+   "label": "Connections",
+   "show_dashboard": 1
+  },
+  {
+   "fieldname": "remove_linked_attendance",
+   "fieldtype": "Button",
+   "label": "Remove Linked Attendance"
+  },
+  {
+   "fieldname": "column_break_rvdg",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "get_linked_attendance",
+   "fieldtype": "Button",
+   "label": "Get Linked Attendance"
+  },
+  {
+   "fieldname": "leaves_salary",
+   "fieldtype": "Float",
+   "label": "Basic Salary with Allowances (Leaves)",
+   "read_only": 1
+  },
+  {
+   "fieldname": "leaves_hour_rate",
+   "fieldtype": "Float",
+   "label": "Leaves Hour Rate"
+  },
+  {
+   "fieldname": "short_leaves_tab",
+   "fieldtype": "Tab Break",
+   "label": "Short Leaves"
+  },
+  {
+   "fieldname": "leaves_details_section",
+   "fieldtype": "Section Break",
+   "label": "Leaves Details"
+  },
+  {
+   "fieldname": "total_amount_section",
+   "fieldtype": "Section Break",
+   "label": "Total Amount"
+  },
+  {
+   "default": "0",
+   "fieldname": "total_amount",
+   "fieldtype": "Float",
+   "label": "Total Amount",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_aoro",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_mfys",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "leaves_table",
+   "fieldtype": "Table",
+   "label": "Leaves Table",
+   "options": "Attendance Process Short Leaves Details",
+   "read_only": 1
+  },
+  {
+   "fieldname": "bulk_reference",
+   "fieldtype": "Link",
+   "label": "Bulk Reference",
+   "options": "Attendance Process Bulk",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [
+  {
+   "group": "Additional Salary",
+   "link_doctype": "Additional Salary",
+   "link_fieldname": "ref_docname"
+  },
+  {
+   "group": "Attendance",
+   "link_doctype": "Attendance",
+   "link_fieldname": "custom_att_pro_ref"
+  }
+ ],
+ "modified": "2024-09-11 12:56:36.821761",
+ "modified_by": "Administrator",
+ "module": "Masar Ksa Hrms",
+ "name": "Attendance Process",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

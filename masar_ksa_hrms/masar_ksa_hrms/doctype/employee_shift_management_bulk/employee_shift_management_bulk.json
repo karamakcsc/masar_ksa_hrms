@@ -1,0 +1,257 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "naming_series:",
+ "creation": "2024-08-26 15:16:38.911595",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "details_section",
+  "posting_date",
+  "column_break_qdhl",
+  "status",
+  "date_section",
+  "start_date",
+  "column_break_yiga",
+  "end_date",
+  "shift_types_section",
+  "saturday_st",
+  "monday_st",
+  "wednesday_st",
+  "friday_st",
+  "column_break_yzmv",
+  "sunday_st",
+  "tuesday_st",
+  "thursday_st",
+  "section_break_xegl",
+  "amended_from",
+  "employees_tab",
+  "employees_filter_section",
+  "department",
+  "column_break_ghih",
+  "nationality",
+  "employees_no",
+  "employees_section",
+  "emp_table",
+  "connections_tab",
+  "series_details_section",
+  "naming_series"
+ ],
+ "fields": [
+  {
+   "fieldname": "series_details_section",
+   "fieldtype": "Section Break",
+   "hidden": 1,
+   "label": "Series Details"
+  },
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Series",
+   "options": "HR-SHTB-.YYYY.-"
+  },
+  {
+   "fieldname": "details_section",
+   "fieldtype": "Section Break",
+   "label": "Details"
+  },
+  {
+   "fieldname": "column_break_qdhl",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Today",
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "label": "Posting Date"
+  },
+  {
+   "default": "Active",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Status",
+   "options": "Active\nInactive",
+   "reqd": 1
+  },
+  {
+   "fieldname": "date_section",
+   "fieldtype": "Section Break",
+   "label": "Date"
+  },
+  {
+   "fieldname": "start_date",
+   "fieldtype": "Date",
+   "label": "Start Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_yiga",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "end_date",
+   "fieldtype": "Date",
+   "label": "End Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "shift_types_section",
+   "fieldtype": "Section Break",
+   "label": "Shift Types"
+  },
+  {
+   "fieldname": "saturday_st",
+   "fieldtype": "Link",
+   "label": "Saturday Shift Type",
+   "options": "Shift Type"
+  },
+  {
+   "fieldname": "monday_st",
+   "fieldtype": "Link",
+   "label": "Monday Shift Type",
+   "options": "Shift Type"
+  },
+  {
+   "fieldname": "wednesday_st",
+   "fieldtype": "Link",
+   "label": "Wednesday Shift Type",
+   "options": "Shift Type"
+  },
+  {
+   "fieldname": "friday_st",
+   "fieldtype": "Link",
+   "label": "Friday Shift Type",
+   "options": "Shift Type"
+  },
+  {
+   "fieldname": "column_break_yzmv",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "sunday_st",
+   "fieldtype": "Link",
+   "label": "Sunday Shift Type",
+   "options": "Shift Type"
+  },
+  {
+   "fieldname": "tuesday_st",
+   "fieldtype": "Link",
+   "label": "Tuesday Shift Type",
+   "options": "Shift Type"
+  },
+  {
+   "fieldname": "thursday_st",
+   "fieldtype": "Link",
+   "label": "Thursday Shift Type",
+   "options": "Shift Type"
+  },
+  {
+   "fieldname": "section_break_xegl",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Employee Shift Management",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Employee Shift Management",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "depends_on": "eval:doc.__islocal != 1",
+   "fieldname": "employees_tab",
+   "fieldtype": "Tab Break",
+   "label": "Employees"
+  },
+  {
+   "fieldname": "department",
+   "fieldtype": "Link",
+   "label": "Department",
+   "options": "Department"
+  },
+  {
+   "fieldname": "employees_filter_section",
+   "fieldtype": "Section Break",
+   "label": "Employees Filter"
+  },
+  {
+   "fieldname": "column_break_ghih",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "nationality",
+   "fieldtype": "Link",
+   "label": "Nationality",
+   "options": "Country"
+  },
+  {
+   "fieldname": "employees_no",
+   "fieldtype": "Int",
+   "label": "Number Of Employees",
+   "read_only": 1
+  },
+  {
+   "fieldname": "employees_section",
+   "fieldtype": "Section Break",
+   "label": "Employees"
+  },
+  {
+   "fieldname": "emp_table",
+   "fieldtype": "Table",
+   "label": "Employees",
+   "options": "Employee Shift Management Bulk Details",
+   "reqd": 1
+  },
+  {
+   "fieldname": "connections_tab",
+   "fieldtype": "Tab Break",
+   "label": "Connections",
+   "show_dashboard": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [
+  {
+   "link_doctype": "Employee Shift Management",
+   "link_fieldname": "reference_bulk"
+  }
+ ],
+ "modified": "2024-08-28 10:37:26.562600",
+ "modified_by": "Administrator",
+ "module": "Masar Ksa Hrms",
+ "name": "Employee Shift Management Bulk",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

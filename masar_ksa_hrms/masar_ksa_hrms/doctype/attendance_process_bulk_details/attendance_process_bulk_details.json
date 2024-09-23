@@ -1,0 +1,74 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-09-11 11:09:20.971543",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "employee",
+  "employee_name",
+  "column_break_mydx",
+  "nationality",
+  "department",
+  "default_shift"
+ ],
+ "fields": [
+  {
+   "fieldname": "employee",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Employee",
+   "options": "Employee",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "employee.employee_name",
+   "fieldname": "employee_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Employee Name",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "employee.custom_nationality",
+   "fieldname": "nationality",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Nationality",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "employee.department",
+   "fieldname": "department",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Department",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "employee.default_shift",
+   "fieldname": "default_shift",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Default Shift",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_mydx",
+   "fieldtype": "Column Break"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2024-09-11 11:14:29.731346",
+ "modified_by": "Administrator",
+ "module": "Masar Ksa Hrms",
+ "name": "Attendance Process Bulk Details",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

@@ -1,0 +1,93 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:termination_name",
+ "creation": "2024-09-23 13:58:27.390247",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "enabled_section",
+  "disabled",
+  "details_section",
+  "termination_name",
+  "column_break_fhuc",
+  "is_resignation",
+  "resignation_details_section",
+  "res_periods_table"
+ ],
+ "fields": [
+  {
+   "depends_on": "eval:doc.disabled ==0",
+   "fieldname": "details_section",
+   "fieldtype": "Section Break",
+   "label": "Details"
+  },
+  {
+   "default": "0",
+   "fieldname": "disabled",
+   "fieldtype": "Check",
+   "label": "Disabled"
+  },
+  {
+   "fieldname": "termination_name",
+   "fieldtype": "Data",
+   "label": "Termination Name",
+   "unique": 1
+  },
+  {
+   "default": "0",
+   "depends_on": "termination_name",
+   "fieldname": "is_resignation",
+   "fieldtype": "Check",
+   "label": "Is Resignation"
+  },
+  {
+   "depends_on": "eval:doc.disabled ==0 && doc.is_resignation ==1",
+   "fieldname": "resignation_details_section",
+   "fieldtype": "Section Break",
+   "label": "Resignation Details"
+  },
+  {
+   "fieldname": "enabled_section",
+   "fieldtype": "Section Break",
+   "label": "Enabled"
+  },
+  {
+   "fieldname": "column_break_fhuc",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.disabled ==0 && doc.is_resignation ==1",
+   "fieldname": "res_periods_table",
+   "fieldtype": "Table",
+   "label": "Resignation Periods",
+   "mandatory_depends_on": "eval:doc.disabled ==0 && doc.is_resignation ==1",
+   "options": "Termination Type Details"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-09-23 14:15:01.238022",
+ "modified_by": "Administrator",
+ "module": "Masar Ksa Hrms",
+ "name": "Termination Type",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

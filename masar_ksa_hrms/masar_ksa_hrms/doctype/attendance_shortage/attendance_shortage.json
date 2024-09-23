@@ -1,0 +1,243 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "naming_series:",
+ "creation": "2024-09-08 10:04:45.819861",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "employee",
+  "employee_name",
+  "department",
+  "shift_assignment",
+  "column_break_sthq",
+  "posting_date",
+  "company",
+  "leave_approver",
+  "date_details_section",
+  "from_date",
+  "column_break_woel",
+  "to_date",
+  "section_break_txcn",
+  "amended_from",
+  "naming_series",
+  "attendance_details_tab",
+  "is_bulk",
+  "section_break_tmuy",
+  "attendance",
+  "attendance_details_section",
+  "total_duration",
+  "action_type",
+  "column_break_lerv",
+  "leave_type",
+  "salary_component",
+  "connections_tab"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_txcn",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Attendance Shortage",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "employee",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Employee",
+   "options": "Employee",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "employee.employee_name",
+   "fieldname": "employee_name",
+   "fieldtype": "Data",
+   "label": "Employee Name",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "employee.department",
+   "fieldname": "department",
+   "fieldtype": "Link",
+   "label": "Department",
+   "options": "Department",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_sthq",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Today",
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Posting Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Company",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "employee.leave_approver",
+   "fieldname": "leave_approver",
+   "fieldtype": "Link",
+   "label": "Leave Approver",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "date_details_section",
+   "fieldtype": "Section Break",
+   "label": "Date Details"
+  },
+  {
+   "fieldname": "from_date",
+   "fieldtype": "Date",
+   "label": "From Date",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_woel",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "to_date",
+   "fieldtype": "Date",
+   "label": "To Date",
+   "read_only": 1
+  },
+  {
+   "default": "1",
+   "fieldname": "attendance_details_tab",
+   "fieldtype": "Tab Break",
+   "label": "Attendance Details"
+  },
+  {
+   "depends_on": "is_bulk",
+   "fieldname": "attendance_details_section",
+   "fieldtype": "Section Break",
+   "label": "Attendance Details"
+  },
+  {
+   "depends_on": "eval:doc.is_bulk == 0 ",
+   "fieldname": "attendance",
+   "fieldtype": "Table",
+   "options": "Attendance Shortage Details"
+  },
+  {
+   "default": "0",
+   "description": "If enabled, all deductions in the period will be deducted as bulk.",
+   "fieldname": "is_bulk",
+   "fieldtype": "Check",
+   "label": "As a Bulk"
+  },
+  {
+   "default": "None Deduction",
+   "fieldname": "action_type",
+   "fieldtype": "Select",
+   "label": "Action Type",
+   "options": "Salary Deduction\nBalance Deduction\nNone Deduction"
+  },
+  {
+   "depends_on": "is_bulk",
+   "fieldname": "leave_type",
+   "fieldtype": "Link",
+   "label": "Leave Type",
+   "mandatory_depends_on": "is_bulk",
+   "options": "Leave Type"
+  },
+  {
+   "depends_on": "eval:(doc.action_type == 'Salary Deduction')",
+   "fieldname": "salary_component",
+   "fieldtype": "Link",
+   "label": "Salary Component",
+   "mandatory_depends_on": "eval:(doc.action_type == 'Salary Deduction')",
+   "options": "Salary Component"
+  },
+  {
+   "fieldname": "total_duration",
+   "fieldtype": "Duration",
+   "label": "Total Duration",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_lerv",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval: doc.is_bulk == 0 ",
+   "fieldname": "section_break_tmuy",
+   "fieldtype": "Section Break",
+   "label": "Attendance Details"
+  },
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "hidden": 1,
+   "label": "Series",
+   "options": "ATT-SHOR-.MM.-."
+  },
+  {
+   "depends_on": "employee",
+   "fieldname": "shift_assignment",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Shift Assignment",
+   "options": "Shift Assignment",
+   "reqd": 1
+  },
+  {
+   "fieldname": "connections_tab",
+   "fieldtype": "Tab Break",
+   "label": "Connections",
+   "show_dashboard": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [
+  {
+   "group": "Short Leave Application",
+   "link_doctype": "Short Leave Application",
+   "link_fieldname": "attendance_shortage"
+  }
+ ],
+ "modified": "2024-09-09 15:56:22.786746",
+ "modified_by": "Administrator",
+ "module": "Masar Ksa Hrms",
+ "name": "Attendance Shortage",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

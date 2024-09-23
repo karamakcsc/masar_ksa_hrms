@@ -9,19 +9,26 @@
   "overtime_type",
   "rate",
   "column_break_16aw",
-  "salary_component"
+  "salary_component",
+  "normal_day",
+  "off_day",
+  "holidays"
  ],
  "fields": [
   {
    "fieldname": "overtime_type",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Overtime Type",
+   "reqd": 1,
    "unique": 1
   },
   {
    "fieldname": "rate",
    "fieldtype": "Float",
-   "label": "Hour Rate"
+   "in_list_view": 1,
+   "label": "Hour Rate",
+   "reqd": 1
   },
   {
    "fieldname": "column_break_16aw",
@@ -30,13 +37,33 @@
   {
    "fieldname": "salary_component",
    "fieldtype": "Link",
+   "in_list_view": 1,
    "label": "Salary Component",
-   "options": "Salary Component"
+   "options": "Salary Component",
+   "reqd": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "normal_day",
+   "fieldtype": "Check",
+   "label": "Normal Day"
+  },
+  {
+   "default": "0",
+   "fieldname": "off_day",
+   "fieldtype": "Check",
+   "label": "Off Day"
+  },
+  {
+   "default": "0",
+   "fieldname": "holidays",
+   "fieldtype": "Check",
+   "label": "Holidays"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-01-16 13:54:16.524516",
+ "modified": "2024-09-23 14:27:07.024726",
  "modified_by": "Administrator",
  "module": "Masar Ksa Hrms",
  "name": "Overtime Type",
