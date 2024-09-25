@@ -1,0 +1,172 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-09-24 12:07:28.501235",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "details_section",
+  "eos_salary",
+  "employee",
+  "employee_name",
+  "calculate",
+  "column_break_sdsh",
+  "termination_type",
+  "from_date",
+  "to_date",
+  "date_info_section",
+  "working_days",
+  "years",
+  "column_break_tkoh",
+  "months",
+  "days",
+  "amounts_info_section",
+  "years_amount",
+  "months_amount",
+  "column_break_isnr",
+  "day_amount",
+  "total_amount"
+ ],
+ "fields": [
+  {
+   "fieldname": "details_section",
+   "fieldtype": "Section Break",
+   "label": "Details"
+  },
+  {
+   "fieldname": "eos_salary",
+   "fieldtype": "Float",
+   "label": "End of Service Salary"
+  },
+  {
+   "fieldname": "column_break_sdsh",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "termination_type",
+   "fieldtype": "Link",
+   "label": "Termination Type",
+   "options": "Termination Type"
+  },
+  {
+   "fieldname": "employee",
+   "fieldtype": "Link",
+   "label": "Employee",
+   "options": "Employee"
+  },
+  {
+   "fetch_from": "employee.employee_name",
+   "fieldname": "employee_name",
+   "fieldtype": "Data",
+   "label": "Employee Name",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "employee.date_of_joining",
+   "fieldname": "from_date",
+   "fieldtype": "Date",
+   "label": "From Date",
+   "read_only": 1
+  },
+  {
+   "default": "Today",
+   "fieldname": "to_date",
+   "fieldtype": "Date",
+   "label": "To Date"
+  },
+  {
+   "fieldname": "calculate",
+   "fieldtype": "Button",
+   "label": "Calculate"
+  },
+  {
+   "fieldname": "date_info_section",
+   "fieldtype": "Section Break",
+   "label": "Date Info"
+  },
+  {
+   "fieldname": "working_days",
+   "fieldtype": "Int",
+   "label": "Working Days",
+   "read_only": 1
+  },
+  {
+   "fieldname": "years",
+   "fieldtype": "Int",
+   "label": "Years",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_tkoh",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "months",
+   "fieldtype": "Int",
+   "label": "Months",
+   "read_only": 1
+  },
+  {
+   "fieldname": "days",
+   "fieldtype": "Int",
+   "label": "Days",
+   "read_only": 1
+  },
+  {
+   "fieldname": "amounts_info_section",
+   "fieldtype": "Section Break",
+   "label": "Amounts Info"
+  },
+  {
+   "fieldname": "years_amount",
+   "fieldtype": "Float",
+   "label": "Years Amount",
+   "read_only": 1
+  },
+  {
+   "fieldname": "months_amount",
+   "fieldtype": "Float",
+   "label": "Months Amount",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_isnr",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "day_amount",
+   "fieldtype": "Float",
+   "label": "Day Amount",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_amount",
+   "fieldtype": "Float",
+   "label": "Total Amount",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2024-09-24 12:25:54.086062",
+ "modified_by": "Administrator",
+ "module": "Masar Ksa Hrms",
+ "name": "End of Service Calculator",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

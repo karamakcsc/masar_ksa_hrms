@@ -239,6 +239,7 @@ doctype_list_js = {
 # default_log_clearing_doctypes = {
 # 	"Logging DocType Name": 30  # days to retain logs
 # }
+#
 fixtures = [
     {"dt": "Custom Field", "filters": [
         [
@@ -248,10 +249,15 @@ fixtures = [
                 "Salary Component-custom_is_ss_applicable",
                 "Salary Component-custom_salary_deduction",
                 "Salary Component-custom_is_eos_applicable",
+                "Salary Component-custom_is_short_leave_applicable",
                 "Employee-custom_nationality",
                 "Employee-custom_overtime_details",
                 "Employee-custom_is_overtime_applicable",
                 "Employee-custom_salary_components", 
+                "Employee-custom_end_of_service_details", 
+                "Employee-custom_is_eos_applicable", 
+                "Employee-custom_eos_default_period", 
+                "Employee-custom_emp_eso_periods_table", 
                 "Employee-custom_employee_salary_component",
                 "Employee-custom_social_security_details", 
                 "Employee-custom__is_ss_applicable",
