@@ -14,8 +14,6 @@ frappe.ui.form.on("Salary Component", {
 });
 
 function formula_display(frm) {
-    if (frm.doc.custom_formula_check === 1) {
-        frm.toggle_display("formula", false);
         hrms.payroll_utils = {
             set_autocompletions_for_condition_and_formula: function(frm, child_row = "") {
                 const autocompletions = [];
@@ -87,7 +85,8 @@ function formula_display(frm) {
                 __("Create"),
             );
         }
-
+        if (frm.doc.custom_formula_check === 1) {
+            frm.toggle_display("formula", false);
         // Call the custom formula to update the formula (Zaid)
         frappe.call({
             method: "masar_ksa_hrms.custom.salary_component.salary_component.update_formula_via_api",

@@ -1,0 +1,449 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "naming_series:",
+ "creation": "2024-09-25 15:01:52.656072",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_ygxa",
+  "employee",
+  "employee_name",
+  "nationality",
+  "marital_status",
+  "column_break_cijb",
+  "company",
+  "from_date",
+  "basic_salary_component",
+  "basic_salary",
+  "section_break_ggrn",
+  "social_security",
+  "is_ss_applicable",
+  "ss_component",
+  "edit_info",
+  "ss_number",
+  "ss_start_date",
+  "default_ss",
+  "emp_ss_rate",
+  "comp_ss_rate",
+  "overtime",
+  "is_overtime_applicable",
+  "end_of_service",
+  "is_end_of_service_applicable",
+  "eos_default_period",
+  "end_of_service_rate",
+  "column_break_lswj",
+  "housing",
+  "is_housing_applicable",
+  "housing_component",
+  "by_percent",
+  "by_amount",
+  "default_percent",
+  "percentage",
+  "housing_amount",
+  "calculate",
+  "section_break_wleo",
+  "other_salary_component",
+  "esc_table",
+  "section_break_elyl",
+  "deduction_salary",
+  "edit_ss_salary",
+  "ss_salary",
+  "ss_amount",
+  "column_break_fkri",
+  "basic_salary_with_allowance",
+  "eos_salary",
+  "section_break_wkni",
+  "amended_from",
+  "column_break_jqxn",
+  "naming_series",
+  "connections_tab"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_ygxa",
+   "fieldtype": "Section Break",
+   "label": "Employee Details"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Employee Salary Component Management",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "employee",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Employee",
+   "options": "Employee",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_wkni",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "hidden": 1,
+   "label": "Name",
+   "options": "ESC-."
+  },
+  {
+   "fetch_from": "employee.employee_name",
+   "fieldname": "employee_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Employee Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_cijb",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Today",
+   "fetch_from": "employee.company",
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Company",
+   "options": "Company",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "from_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "From Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_jqxn",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_wleo",
+   "fieldtype": "Section Break",
+   "label": "Other Component Details"
+  },
+  {
+   "depends_on": "eval: doc.employee != null && doc.other_salary_component ==1 ",
+   "fieldname": "esc_table",
+   "fieldtype": "Table",
+   "label": "Employee Salary Component",
+   "mandatory_depends_on": "eval: doc.employee != null && doc.other_salary_component ==1 ",
+   "options": "ESCM Details"
+  },
+  {
+   "fieldname": "calculate",
+   "fieldtype": "Button",
+   "label": "Calculate"
+  },
+  {
+   "fieldname": "section_break_elyl",
+   "fieldtype": "Section Break",
+   "label": "Salary Details"
+  },
+  {
+   "depends_on": "employee",
+   "fieldname": "basic_salary",
+   "fieldtype": "Float",
+   "label": "Basic Salary",
+   "mandatory_depends_on": "employee"
+  },
+  {
+   "fieldname": "deduction_salary",
+   "fieldtype": "Float",
+   "label": "Deduction Salary",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "depends_on": "is_ss_applicable",
+   "fieldname": "edit_ss_salary",
+   "fieldtype": "Check",
+   "label": "Edit Social Security Salary"
+  },
+  {
+   "fieldname": "column_break_fkri",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "basic_salary_with_allowance",
+   "fieldtype": "Float",
+   "label": "Basic Salary with Allowance",
+   "read_only": 1
+  },
+  {
+   "depends_on": "is_end_of_service_applicable",
+   "fieldname": "eos_salary",
+   "fieldtype": "Float",
+   "label": "EOS Salary",
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval: (doc.is_ss_applicable + doc.edit_ss_salary)== 2",
+   "fieldname": "ss_salary",
+   "fieldtype": "Float",
+   "label": "Social Security Salary",
+   "mandatory_depends_on": "eval: (doc.is_ss_applicable + doc.edit_ss_salary)== 2"
+  },
+  {
+   "fetch_from": "employee.custom_nationality",
+   "fieldname": "nationality",
+   "fieldtype": "Link",
+   "label": "Nationality",
+   "options": "Country",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "is_overtime_applicable",
+   "fieldtype": "Check",
+   "label": "Is Overtime Applicable"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_end_of_service_applicable",
+   "fieldtype": "Check",
+   "label": "Is End of Service Applicable"
+  },
+  {
+   "default": "1",
+   "depends_on": "is_end_of_service_applicable",
+   "fieldname": "eos_default_period",
+   "fieldtype": "Check",
+   "label": "EOS Default Period"
+  },
+  {
+   "depends_on": "eval:doc.eos_default_period ==0 && doc.is_end_of_service_applicable == 1 ",
+   "fieldname": "end_of_service_rate",
+   "fieldtype": "Link",
+   "label": "End of Service Rate",
+   "mandatory_depends_on": "eval:doc.eos_default_period ==0 && doc.is_end_of_service_applicable == 1 ",
+   "options": "End of Service Rate"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_ss_applicable",
+   "fieldtype": "Check",
+   "label": "Is Social Security Applicable"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_housing_applicable",
+   "fieldtype": "Check",
+   "label": "Is Housing Applicable"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval: doc.is_housing_applicable == 1 && doc.by_amount == 0 ",
+   "fieldname": "by_percent",
+   "fieldtype": "Check",
+   "label": "By Percentage"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval: doc.is_housing_applicable == 1 && doc.by_percent == 0 ",
+   "fieldname": "by_amount",
+   "fieldtype": "Check",
+   "label": "By Amount"
+  },
+  {
+   "depends_on": "eval: doc.is_housing_applicable ==1 && (doc.by_amount + doc.by_percent) == 1",
+   "fieldname": "housing_amount",
+   "fieldtype": "Float",
+   "label": "Housing Amount",
+   "mandatory_depends_on": "by_amount",
+   "read_only_depends_on": "by_percent"
+  },
+  {
+   "depends_on": "is_ss_applicable",
+   "fieldname": "ss_number",
+   "fieldtype": "Int",
+   "label": "Social Security Number",
+   "mandatory_depends_on": "is_ss_applicable",
+   "read_only_depends_on": "eval:doc.edit_info == 0 "
+  },
+  {
+   "depends_on": "is_housing_applicable",
+   "fieldname": "housing_component",
+   "fieldtype": "Link",
+   "label": "Salary Component",
+   "mandatory_depends_on": "is_housing_applicable",
+   "options": "Salary Component"
+  },
+  {
+   "depends_on": "employee",
+   "fieldname": "basic_salary_component",
+   "fieldtype": "Link",
+   "label": "Basic Salary Component",
+   "mandatory_depends_on": "employee",
+   "options": "Salary Component"
+  },
+  {
+   "default": "0",
+   "fieldname": "other_salary_component",
+   "fieldtype": "Check",
+   "label": "Other Salary Component"
+  },
+  {
+   "default": "1",
+   "depends_on": "eval: doc.by_percent=== 1 && !(['single', 'Married'].includes(doc.marital_status))",
+   "fieldname": "default_percent",
+   "fieldtype": "Check",
+   "label": "Default Percentage",
+   "read_only_depends_on": "eval: doc.marital_status == 'Single' || doc.marital_status == 'Married'"
+  },
+  {
+   "depends_on": "eval: doc.default_percent == 0 && (doc.is_housing_applicable + doc.by_percent) == 2",
+   "fieldname": "percentage",
+   "fieldtype": "Float",
+   "label": "Percentage",
+   "mandatory_depends_on": "eval: doc.default_percent == 0",
+   "read_only_depends_on": "eval: doc.default_percent == 1"
+  },
+  {
+   "fetch_from": "employee.marital_status",
+   "fieldname": "marital_status",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Marital Status"
+  },
+  {
+   "fieldname": "section_break_ggrn",
+   "fieldtype": "Section Break",
+   "label": "Salary Component Details"
+  },
+  {
+   "fieldname": "social_security",
+   "fieldtype": "Heading",
+   "label": "Social Security"
+  },
+  {
+   "fieldname": "overtime",
+   "fieldtype": "Heading",
+   "label": "Overtime"
+  },
+  {
+   "fieldname": "end_of_service",
+   "fieldtype": "Heading",
+   "label": "End of Service"
+  },
+  {
+   "fieldname": "column_break_lswj",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "housing",
+   "fieldtype": "Heading",
+   "label": "Housing"
+  },
+  {
+   "depends_on": "is_ss_applicable",
+   "fieldname": "ss_component",
+   "fieldtype": "Link",
+   "label": "Salary Component",
+   "mandatory_depends_on": "is_ss_applicable",
+   "options": "Salary Component"
+  },
+  {
+   "default": "0",
+   "depends_on": "is_ss_applicable",
+   "fieldname": "ss_amount",
+   "fieldtype": "Float",
+   "label": "Social Security Amount",
+   "read_only": 1
+  },
+  {
+   "default": "1",
+   "depends_on": "is_ss_applicable",
+   "fieldname": "default_ss",
+   "fieldtype": "Check",
+   "label": "Default Social Security"
+  },
+  {
+   "depends_on": "eval: (doc.default_ss  == 0 && doc.is_ss_applicable)  == 1 ",
+   "fieldname": "emp_ss_rate",
+   "fieldtype": "Float",
+   "label": "Employee Social Security Rate",
+   "mandatory_depends_on": "eval: (doc.default_ss  == 0 && doc.is_ss_applicable)  == 1 "
+  },
+  {
+   "depends_on": "eval: (doc.default_ss  == 0 && doc.is_ss_applicable)  == 1 ",
+   "fieldname": "comp_ss_rate",
+   "fieldtype": "Float",
+   "label": "Company Social Security Rate",
+   "mandatory_depends_on": "eval: (doc.default_ss  == 0 && doc.is_ss_applicable)  == 1 "
+  },
+  {
+   "depends_on": "is_ss_applicable",
+   "fieldname": "ss_start_date",
+   "fieldtype": "Date",
+   "label": "Start Date",
+   "mandatory_depends_on": "is_ss_applicable",
+   "read_only_depends_on": "eval:doc.edit_info == 0 "
+  },
+  {
+   "default": "0",
+   "depends_on": "is_ss_applicable",
+   "fieldname": "edit_info",
+   "fieldtype": "Check",
+   "label": "Edit Info"
+  },
+  {
+   "fieldname": "connections_tab",
+   "fieldtype": "Tab Break",
+   "label": "Connections",
+   "show_dashboard": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [
+  {
+   "is_child_table": 1,
+   "link_doctype": "Salary Component History Details",
+   "link_fieldname": "escm_ref",
+   "parent_doctype": "Employee Salary Component History",
+   "table_fieldname": "esch_table"
+  },
+  {
+   "link_doctype": "Employee",
+   "link_fieldname": "custom_escm_ref"
+  }
+ ],
+ "modified": "2024-10-01 12:52:13.744592",
+ "modified_by": "Administrator",
+ "module": "Masar Ksa Hrms",
+ "name": "Employee Salary Component Management",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

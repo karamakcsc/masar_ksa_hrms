@@ -1,0 +1,232 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "naming_series:",
+ "creation": "2024-10-01 10:38:25.986577",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "company",
+  "column_break_ragh",
+  "posting_date",
+  "salary_component",
+  "section_break_jqxp",
+  "by_amount",
+  "by_percent",
+  "is_overtime_applicaple",
+  "column_break_rrrr",
+  "total",
+  "percentage",
+  "section_break_atfn",
+  "amended_from",
+  "naming_series",
+  "employees_tab",
+  "filter_employees_section",
+  "department",
+  "country",
+  "designation",
+  "column_break_xibz",
+  "branch",
+  "employee_grade",
+  "employment_type",
+  "no_of_employee",
+  "section_break_vkyd",
+  "employees",
+  "connections_tab"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_atfn",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Employee Deduction Bulk",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "hidden": 1,
+   "label": "Naming",
+   "options": "SAL-DED-."
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Company",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_ragh",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Today",
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "label": "Posting Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "salary_component",
+   "fieldtype": "Link",
+   "label": "Salary Component",
+   "options": "Salary Component",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_jqxp",
+   "fieldtype": "Section Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "by_amount",
+   "fieldtype": "Check",
+   "label": "By Amount"
+  },
+  {
+   "default": "0",
+   "fieldname": "by_percent",
+   "fieldtype": "Check",
+   "label": "By Percent"
+  },
+  {
+   "default": "0",
+   "depends_on": "by_percent",
+   "fieldname": "is_overtime_applicaple",
+   "fieldtype": "Check",
+   "label": "Is Overtime Applicaple"
+  },
+  {
+   "fieldname": "column_break_rrrr",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.by_amount == 1",
+   "fieldname": "total",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Total"
+  },
+  {
+   "depends_on": "eval:doc.by_percent == 1",
+   "fieldname": "percentage",
+   "fieldtype": "Percent",
+   "in_list_view": 1,
+   "label": "Percentage"
+  },
+  {
+   "fieldname": "employees_tab",
+   "fieldtype": "Tab Break",
+   "label": "Employees"
+  },
+  {
+   "fieldname": "department",
+   "fieldtype": "Link",
+   "label": "Department",
+   "options": "Department"
+  },
+  {
+   "fieldname": "country",
+   "fieldtype": "Link",
+   "label": "Country",
+   "options": "Country"
+  },
+  {
+   "fieldname": "designation",
+   "fieldtype": "Link",
+   "label": "Designation",
+   "options": "Designation"
+  },
+  {
+   "fieldname": "column_break_xibz",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "branch",
+   "fieldtype": "Link",
+   "label": "Branch",
+   "options": "Branch"
+  },
+  {
+   "fieldname": "employee_grade",
+   "fieldtype": "Link",
+   "label": "Employee Grade",
+   "options": "Employee Grade"
+  },
+  {
+   "fieldname": "employment_type",
+   "fieldtype": "Link",
+   "label": "Employment Type",
+   "options": "Employment Type"
+  },
+  {
+   "fieldname": "no_of_employee",
+   "fieldtype": "Int",
+   "label": "Number of Employees",
+   "read_only": 1
+  },
+  {
+   "fieldname": "filter_employees_section",
+   "fieldtype": "Section Break",
+   "label": "Filter Employees"
+  },
+  {
+   "fieldname": "section_break_vkyd",
+   "fieldtype": "Section Break",
+   "label": "Employees"
+  },
+  {
+   "fieldname": "employees",
+   "fieldtype": "Table",
+   "label": "Employees",
+   "options": "Employee Deduction Bulk Details"
+  },
+  {
+   "fieldname": "connections_tab",
+   "fieldtype": "Tab Break",
+   "label": "Connections",
+   "show_dashboard": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [
+  {
+   "link_doctype": "Employee Deduction",
+   "link_fieldname": "bulk_ref"
+  }
+ ],
+ "modified": "2024-10-01 11:37:51.127250",
+ "modified_by": "Administrator",
+ "module": "Masar Ksa Hrms",
+ "name": "Employee Deduction Bulk",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

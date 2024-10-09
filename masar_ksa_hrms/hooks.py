@@ -114,9 +114,10 @@ app_license = "mit"
 # ---------------
 # Override standard doctype classes
 
-# override_doctype_class = {
-# 	"ToDo": "custom_app.overrides.CustomToDo"
-# }
+override_doctype_class = {
+	"Payroll Entry": "masar_ksa_hrms.override._payroll_entry.PayrollEntry", 
+    "Salary Slip": "masar_ksa_hrms.override._salary_slip.SalarySlip"
+}
 
 # Document Events
 # ---------------
@@ -134,10 +135,14 @@ doc_events = {
     },
     "Company":{
         "validate":"masar_ksa_hrms.custom.company.company.validate",
+    },
+    "Journal Entry": {
+        "before_cancel":"masar_ksa_hrms.custom.journal_entry.journal_entry.before_cancel"
     }
 }
 doctype_js = {
-    "Employee": "custom/employee/employee.js"
+    "Employee": "custom/employee/employee.js",
+    "Salary Component" :"custom/salary_component/salary_component.js"
 }
 doctype_list_js = {
     "Attendance Shortage" : "masar_ksa_hrms/doctype/attendance_shortage/attendance_shortage_list.js"
@@ -146,13 +151,13 @@ doctype_list_js = {
 # Scheduled Tasks
 # ---------------
 
-# scheduler_events = {
+scheduler_events = {
 # 	"all": [
 # 		"masar_ksa_hrms.tasks.all"
 # 	],
-# 	"daily": [
-# 		"masar_ksa_hrms.tasks.daily"
-# 	],
+	"daily": [
+		"masar_ksa_hrms.masar_ksa_hrms.doctype.utils.daily"
+	],
 # 	"hourly": [
 # 		"masar_ksa_hrms.tasks.hourly"
 # 	],
@@ -162,7 +167,7 @@ doctype_list_js = {
 # 	"monthly": [
 # 		"masar_ksa_hrms.tasks.monthly"
 # 	],
-# }
+}
 
 # Testing
 # -------
@@ -244,42 +249,67 @@ fixtures = [
     {"dt": "Custom Field", "filters": [
         [
             "name", "in", [
+                ### Salary Component
+                "Salary Component-custom_name_in_arabic", 
                 "Salary Component-custom_is_overtime_applicable", 
-                "Salary Component-custom_formula_check",
+                "Salary Component-custom_is_housing_allowance",
+                "Salary Component-custom_is_eos_applicable",                
                 "Salary Component-custom_is_ss_applicable",
                 "Salary Component-custom_salary_deduction",
-                "Salary Component-custom_is_eos_applicable",
-                "Salary Component-custom_is_short_leave_applicable",
+                "Salary Component-custom_is_short_leave_applicable", 
+                "Salary Component-custom_formula_check",
+                ### Employee
+                "Employee-custom_passport_expiry_date",
+                "Employee-custom_residence_expiry_date",
+                "Employee-custom_work_permit_expiry_date",
                 "Employee-custom_nationality",
+                "Employee-custom_citizen_number",
+                "Employee-custom_nationality_number" ,
                 "Employee-custom_overtime_details",
                 "Employee-custom_is_overtime_applicable",
-                "Employee-custom_salary_components", 
-                "Employee-custom_end_of_service_details", 
-                "Employee-custom_is_eos_applicable", 
+                "Employee-custom_end_of_service_details",
+                "Employee-custom_is_eos_applicable",         
                 "Employee-custom_eos_default_period", 
-                "Employee-custom_emp_eso_periods_table", 
-                "Employee-custom_employee_salary_component",
-                "Employee-custom_social_security_details", 
-                "Employee-custom__is_ss_applicable",
+                "Employee-custom_end_of_service_rate", 
+                "Employee-custom_social_security_details",  
+                "Employee-custom_is_social_security_applicable",
                 "Employee-custom_ss_number",
-                "Employee-custom_nationality_number" ,
-                "Employee-custom_citizen_number",
+                "Employee-custom_ss_start_date",
+                "Employee-custom_column_break_mdom2",
+                "Employee-custom_ss_salary",
+                "Employee-custom_ss_amount",
+                "Employee-custom_housing_details",
+                "Employee-custom_is_housing_applicable",
+                "Employee-custom_by_percent",
+                "Employee-custom_by_amount",
+                "Employee-custom_column_break_ob8vy",
+                "Employee-custom_housing_percent",
+                "Employee-custom_housing_amount",
                 "Employee-custom_salaries" , 
                 "Employee-custom_basic_salary" ,
                 "Employee-custom_salary_deduction",
                 "Employee-custom_column_break_xom87",
                 "Employee-custom_basic_salary_with_allowance",
                 "Employee-custom_eos_salary",
+                "Employee-custom_salary_component", 
+                "Employee-custom_employee_salary_component",
+                "Employee-custom_escm_ref",
+                # Shift Assignment
                 "Shift Assignment-custom_employee_shift_management",
+                # Company
+                "Company-custom_salary", 
                 "Company-custom_end_of_service_info",
                 "Company-custom_comp_eos_table",
                 "Company-custom_end_of_service_accounts",
                 "Company-custom_end_of_service_expenses",
                 "Company-custom_column_break_udaic",
                 "Company-custom_end_of_service_liabilities",
-                "Company-custom_salary", 
-                "Company-custom_social_security_info" , 
+                "Company-custom_salary_component_info" , 
                 "Company-custom_salary_component" , 
+                "Company-custom_default_housing_percent", 
+                "Company-custom_column_break_dlial", 
+                "Company-custom_single_housing_percent", 
+                "Company-custom_married_housing_percent", 
                 "Company-custom_social_security_info", 
                 "Company-custom_saudi_arabia_info", 
                 "Company-custom_comp_ss_sa_rate", 
@@ -288,21 +318,24 @@ fixtures = [
                 "Company-custom_other_nationality_info", 
                 "Company-custom_comp_ss_other_rate", 
                 "Company-custom_emp_ss_other_rate", 
-                "Company-custom_emp_ss_other_rate", 
+                "Company-custom_social_security_accounts", 
                 "Company-custom_ss_expenses", 
                 "Company-custom_column_break_syuvv", 
                 "Company-custom_ss_liabilities", 
+                ##### Shift Type
                 "Shift Type-custom_grace_period_settings_overtime_section",
                 "Shift Type-custom_enable_early_entry_marking" , 
                 "Shift Type-custom_early_entry_grace_period",
                 "Shift Type-custom_column_break_wzcol", 
                 "Shift Type-custom_enable_late_exit_marking",
                 "Shift Type-custom_late_exit_grace_period",
-                # "Shift Type-custom_30_working_day",
+                ### Attendance
                 "Attendance-custom_att_pro_ref",
+                ### Leave Type
                 "Leave Type-custom_salary_deduction",
                 "Leave Type-custom_balance_deduction",
                 "Leave Type-custom_salary_deduction_rate", 
+                ### Leave Application
                 "Leave Application-custom_sla_reference"
                 ]
         ]

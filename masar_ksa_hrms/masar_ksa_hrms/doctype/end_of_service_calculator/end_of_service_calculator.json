@@ -14,6 +14,8 @@
   "termination_type",
   "from_date",
   "to_date",
+  "eos_default_period",
+  "end_of_service_rate",
   "date_info_section",
   "working_days",
   "years",
@@ -144,12 +146,27 @@
    "fieldtype": "Float",
    "label": "Total Amount",
    "read_only": 1
+  },
+  {
+   "default": "1",
+   "fieldname": "eos_default_period",
+   "fieldtype": "Check",
+   "label": "EOS Default Period"
+  },
+  {
+   "depends_on": "eval:doc.eos_default_period == 0 ",
+   "fieldname": "end_of_service_rate",
+   "fieldtype": "Link",
+   "label": "End of Service Rate",
+   "link_filters": "[[\"End of Service Rate\",\"employee\",\"=\",\"eval: doc.employee\"]]",
+   "mandatory_depends_on": "eval:doc.eos_default_period == 0 ",
+   "options": "End of Service Rate"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-09-24 12:25:54.086062",
+ "modified": "2024-10-03 11:57:51.166935",
  "modified_by": "Administrator",
  "module": "Masar Ksa Hrms",
  "name": "End of Service Calculator",

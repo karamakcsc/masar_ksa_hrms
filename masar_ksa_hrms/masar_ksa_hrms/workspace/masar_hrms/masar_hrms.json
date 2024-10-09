@@ -1,6 +1,6 @@
 {
  "charts": [],
- "content": "[{\"id\":\"YY4lllD6Qn\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Masar HRMS</span>\",\"col\":12}},{\"id\":\"OjtuetbMrq\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"MIM4sNxai1\",\"type\":\"paragraph\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Your Shortcuts</span>\",\"col\":12}},{\"id\":\"J9ed04lGWb\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Overtime Type\",\"col\":4}},{\"id\":\"GRf5CfcbzN\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Termination Type\",\"col\":4}},{\"id\":\"heLBNiYlV8\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Attendance Process\",\"col\":4}},{\"id\":\"s1zhpD0a-j\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Attendance Process Bulk\",\"col\":4}},{\"id\":\"JE6JkIch_r\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Attendance Shortage\",\"col\":4}},{\"id\":\"jPg84Iteef\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Short Leave Application\",\"col\":4}},{\"id\":\"hoHB1KWTHK\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Employee Shift Management\",\"col\":4}},{\"id\":\"qUPcVqED1Z\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Employee Shift Management Bulk\",\"col\":4}},{\"id\":\"WQBnuf9gjF\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"NPS47fKLDq\",\"type\":\"paragraph\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Master Data</span>\",\"col\":12}},{\"id\":\"VjITrow-HZ\",\"type\":\"card\",\"data\":{\"card_name\":\"Master Data\",\"col\":4}},{\"id\":\"u7OTEPKScm\",\"type\":\"card\",\"data\":{\"card_name\":\"Types\",\"col\":4}},{\"id\":\"GJRawmiQjn\",\"type\":\"card\",\"data\":{\"card_name\":\"Bulk\",\"col\":4}}]",
+ "content": "[{\"id\":\"YY4lllD6Qn\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Masar HRMS</span>\",\"col\":12}},{\"id\":\"OjtuetbMrq\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"MIM4sNxai1\",\"type\":\"paragraph\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Your Shortcuts</span>\",\"col\":12}},{\"id\":\"J9ed04lGWb\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Overtime Type\",\"col\":4}},{\"id\":\"GRf5CfcbzN\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Termination Type\",\"col\":4}},{\"id\":\"heLBNiYlV8\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Attendance Process\",\"col\":4}},{\"id\":\"s1zhpD0a-j\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Attendance Process Bulk\",\"col\":4}},{\"id\":\"JE6JkIch_r\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Attendance Shortage\",\"col\":4}},{\"id\":\"jPg84Iteef\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Short Leave Application\",\"col\":4}},{\"id\":\"hoHB1KWTHK\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Employee Shift Management\",\"col\":4}},{\"id\":\"qUPcVqED1Z\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Employee Shift Management Bulk\",\"col\":4}},{\"id\":\"WQBnuf9gjF\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"NPS47fKLDq\",\"type\":\"paragraph\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Master Data</span>\",\"col\":12}},{\"id\":\"VjITrow-HZ\",\"type\":\"card\",\"data\":{\"card_name\":\"Master Data\",\"col\":4}},{\"id\":\"u7OTEPKScm\",\"type\":\"card\",\"data\":{\"card_name\":\"Types\",\"col\":4}},{\"id\":\"GJRawmiQjn\",\"type\":\"card\",\"data\":{\"card_name\":\"Bulk\",\"col\":4}},{\"id\":\"rEDKwOoik3\",\"type\":\"card\",\"data\":{\"card_name\":\"Reports\",\"col\":4}}]",
  "creation": "2024-09-24 10:08:30.995825",
  "custom_blocks": [],
  "docstatus": 0,
@@ -119,9 +119,58 @@
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Reports",
+   "link_count": 4,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Attendance Process",
+   "link_count": 0,
+   "link_to": "Attendance Process",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Short Leave Application",
+   "link_count": 0,
+   "link_to": "Short Leave Application",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Employee Salary Component",
+   "link_count": 0,
+   "link_to": "Employee Salary Component",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Employee Social Security Salary",
+   "link_count": 0,
+   "link_to": "Employee Social Security Salary",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2024-09-24 10:39:55.444100",
+ "modified": "2024-10-07 11:41:17.474300",
  "modified_by": "Administrator",
  "module": "Masar Ksa Hrms",
  "name": "Masar HRMS",

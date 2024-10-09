@@ -8,8 +8,6 @@
  "field_order": [
   "section_break_daxg",
   "company",
-  "document_type",
-  "doctype_name",
   "column_break_wduk",
   "posting_date",
   "salary_component",
@@ -22,7 +20,21 @@
   "percentage",
   "section_break_ombt",
   "amended_from",
-  "naming_series"
+  "column_break_bzsa",
+  "naming_series",
+  "employees_tab",
+  "filter_employees_section",
+  "department",
+  "country",
+  "designation",
+  "column_break_xsrx",
+  "branch",
+  "employee_grade",
+  "employment_type",
+  "no_of_employee",
+  "section_break_pxwe",
+  "employees",
+  "connections_tab"
  ],
  "fields": [
   {
@@ -34,7 +46,7 @@
    "fieldtype": "Link",
    "label": "Amended From",
    "no_copy": 1,
-   "options": "Salaries Increment",
+   "options": "Employee Incentive Bulk",
    "print_hide": 1,
    "read_only": 1,
    "search_index": 1
@@ -50,14 +62,9 @@
    "fieldname": "salary_component",
    "fieldtype": "Link",
    "label": "Salary Component",
+   "link_filters": "[[\"Salary Component\",\"type\",\"=\",\"Earning\"]]",
    "options": "Salary Component",
    "reqd": 1
-  },
-  {
-   "fieldname": "document_type",
-   "fieldtype": "Link",
-   "label": "Filter By",
-   "options": "DocType"
   },
   {
    "default": "Today",
@@ -116,14 +123,6 @@
    "mandatory_depends_on": "eval:doc.by_percent == 1\r\n"
   },
   {
-   "depends_on": "eval:doc.document_type\r\n",
-   "fieldname": "doctype_name",
-   "fieldtype": "Dynamic Link",
-   "label": "Filter Value",
-   "mandatory_depends_on": "eval:doc.document_type\r\n\r\n",
-   "options": "document_type"
-  },
-  {
    "fieldname": "section_break_ombt",
    "fieldtype": "Section Break"
   },
@@ -133,15 +132,99 @@
    "hidden": 1,
    "label": "Naming",
    "options": "SAL-INC-."
+  },
+  {
+   "fieldname": "employees_tab",
+   "fieldtype": "Tab Break",
+   "label": "Employees"
+  },
+  {
+   "fieldname": "filter_employees_section",
+   "fieldtype": "Section Break",
+   "label": "Filter Employees"
+  },
+  {
+   "fieldname": "department",
+   "fieldtype": "Link",
+   "label": "Department",
+   "options": "Department"
+  },
+  {
+   "fieldname": "country",
+   "fieldtype": "Link",
+   "label": "Country",
+   "options": "Country"
+  },
+  {
+   "fieldname": "designation",
+   "fieldtype": "Link",
+   "label": "Designation",
+   "options": "Designation"
+  },
+  {
+   "fieldname": "column_break_xsrx",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "branch",
+   "fieldtype": "Link",
+   "label": "Branch",
+   "options": "Branch"
+  },
+  {
+   "fieldname": "employee_grade",
+   "fieldtype": "Link",
+   "label": "Employee Grade",
+   "options": "Employee Grade"
+  },
+  {
+   "fieldname": "employment_type",
+   "fieldtype": "Link",
+   "label": "Employment Type",
+   "options": "Employment Type"
+  },
+  {
+   "default": "0",
+   "fieldname": "no_of_employee",
+   "fieldtype": "Int",
+   "label": "Number of Employee",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_pxwe",
+   "fieldtype": "Section Break",
+   "label": "Employees"
+  },
+  {
+   "fieldname": "employees",
+   "fieldtype": "Table",
+   "label": "Employees",
+   "options": "Employee Incentive Bulk Details"
+  },
+  {
+   "fieldname": "connections_tab",
+   "fieldtype": "Tab Break",
+   "label": "Connections",
+   "show_dashboard": 1
+  },
+  {
+   "fieldname": "column_break_bzsa",
+   "fieldtype": "Column Break"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
- "links": [],
- "modified": "2024-09-24 12:44:01.036903",
+ "links": [
+  {
+   "group": "Employee Incentive",
+   "link_doctype": "Employee Incentive",
+   "link_fieldname": "custom_bulk_ref"
+  }
+ ],
+ "modified": "2024-10-03 12:02:18.658177",
  "modified_by": "Administrator",
  "module": "Masar Ksa Hrms",
- "name": "Salaries Increment",
+ "name": "Employee Incentive Bulk",
  "naming_rule": "By \"Naming Series\" field",
  "owner": "Administrator",
  "permissions": [

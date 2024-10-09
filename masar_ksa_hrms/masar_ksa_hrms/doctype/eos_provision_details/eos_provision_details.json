@@ -1,0 +1,165 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-10-06 14:50:05.949761",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "posting_date",
+  "from_date",
+  "column_break_ivvk",
+  "eos_salary",
+  "to_date",
+  "date_info_section",
+  "working_day",
+  "years",
+  "column_break_cpwm",
+  "months",
+  "days",
+  "amounts_info_section",
+  "years_amount",
+  "months_amount",
+  "column_break_rter",
+  "days_amount",
+  "total_amount",
+  "provision_section",
+  "provision",
+  "pervious_provision",
+  "column_break_nsig",
+  "provision_diff",
+  "ref_jv"
+ ],
+ "fields": [
+  {
+   "default": "Today",
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Posting Date"
+  },
+  {
+   "fieldname": "date_info_section",
+   "fieldtype": "Section Break",
+   "label": "Date Info"
+  },
+  {
+   "fieldname": "working_day",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Working Day"
+  },
+  {
+   "fieldname": "years",
+   "fieldtype": "Int",
+   "label": "Years"
+  },
+  {
+   "fieldname": "column_break_cpwm",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "months",
+   "fieldtype": "Int",
+   "label": "Months"
+  },
+  {
+   "fieldname": "days",
+   "fieldtype": "Int",
+   "label": "Days"
+  },
+  {
+   "fieldname": "years_amount",
+   "fieldtype": "Float",
+   "label": "Years Amount"
+  },
+  {
+   "fieldname": "months_amount",
+   "fieldtype": "Float",
+   "label": "Months Amount"
+  },
+  {
+   "fieldname": "column_break_rter",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "days_amount",
+   "fieldtype": "Float",
+   "label": "Days Amount"
+  },
+  {
+   "fieldname": "total_amount",
+   "fieldtype": "Float",
+   "label": "Total Amount"
+  },
+  {
+   "fieldname": "amounts_info_section",
+   "fieldtype": "Section Break",
+   "label": "Amounts Info"
+  },
+  {
+   "fieldname": "column_break_ivvk",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "eos_salary",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "EOS Salary"
+  },
+  {
+   "fieldname": "provision_section",
+   "fieldtype": "Section Break",
+   "label": "Provision"
+  },
+  {
+   "fieldname": "provision",
+   "fieldtype": "Float",
+   "label": "Provision"
+  },
+  {
+   "fieldname": "pervious_provision",
+   "fieldtype": "Float",
+   "label": "Pervious Provision"
+  },
+  {
+   "fieldname": "provision_diff",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Provision Difference"
+  },
+  {
+   "fieldname": "column_break_nsig",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "from_date",
+   "fieldtype": "Date",
+   "label": "From Date"
+  },
+  {
+   "fieldname": "to_date",
+   "fieldtype": "Date",
+   "label": "To Date"
+  },
+  {
+   "fieldname": "ref_jv",
+   "fieldtype": "Link",
+   "label": "Journal Entry",
+   "options": "Journal Entry",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2024-10-08 14:18:28.327065",
+ "modified_by": "Administrator",
+ "module": "Masar Ksa Hrms",
+ "name": "EOS Provision Details",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

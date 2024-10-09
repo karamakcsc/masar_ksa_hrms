@@ -6,11 +6,10 @@ frappe.ui.form.on("Attendance Process", {
         GetDatePeriod(frm);
 	},
     onload: function(frm) {
-        DocFilters(frm);
         GetDatePeriod(frm);
 	},
     refresh: function(frm){
-        DocFilters(frm);
+
         GetDatePeriod(frm);
     },
     remove_linked_attendance:function(frm){
@@ -41,32 +40,5 @@ function GetDatePeriod(frm){
             refresh_field("from_date");
             refresh_field("to_date");
         }
-    });
-}
-function DocFilters(frm){
-    frm.get_field('overtime_details').grid.cannot_add_rows = true;
-    frm.set_query("sc_overtime_nd", function () {
-        return {
-            filters: {
-                type: 'Earning',
-                custom_is_overtime_applicable:1
-            },
-        };
-    });
-    frm.set_query("sc_overtime_od", function () {
-        return {
-            filters: {
-                type: 'Earning',
-                custom_is_overtime_applicable:1
-            },
-        };
-    });
-    frm.set_query("sc_overtime_hd", function () {
-        return {
-            filters: {
-                type: 'Earning',
-                custom_is_overtime_applicable:1
-            },
-        };
     });
 }

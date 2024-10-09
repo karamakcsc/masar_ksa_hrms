@@ -32,9 +32,15 @@ class OvertimeType(Document):
             if existing_types and existing_types[0] and existing_types[0]["name"]:
                   exist_type = existing_types[0]["name"]
             if  exist_type is not None and self.normal_day == 1:
-                  frappe.throw(f"Normal Day Type already exists in <b>{exist_type}</b>", title=_("Exist Normal Day Type"))
+                  frappe.throw(
+                      f"Normal Day Type already exists in <b>{exist_type}</b>", title=_("Exist Normal Day Type")
+                    )
             if self.off_day == 1 and exist_type is not None:
-                  frappe.throw(f"Off Day Type already exists in <b>{exist_type}</b>", title=_("Exist Off Day Type"))
+                  frappe.throw(
+                      f"Off Day Type already exists in <b>{exist_type}</b>", title=_("Exist Off Day Type")
+                    )
             if self.holidays == 1 and exist_type is not None:
-                  frappe.throw(f"Holidays Type already exists in <b>{exist_type}</b>", title=_("Exist Holidays Type"))
+                  frappe.throw(
+                      f"Holidays Type already exists in <b>{exist_type}</b>", title=_("Exist Holidays Type")
+                    )
 

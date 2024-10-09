@@ -4,8 +4,7 @@
 import frappe
 from frappe.model.document import Document
 from frappe  import _
-from datetime import datetime , timedelta
-from masar_ksa_hrms.masar_ksa_hrms.doctype.utils import get_number_of_days_in_year
+from masar_ksa_hrms.masar_ksa_hrms.doctype.utils import eos_date_in_priod , eos_provision
 class EndofServiceCalculator(Document):
     
 	@frappe.whitelist()
@@ -41,11 +40,54 @@ class EndofServiceCalculator(Document):
                 title=_("Mandatory Fields")
             )
 			return 
-
-		termination_type = self.termination_type
-		salary = self.eos_salary
-		period_days , years, months, days = get_number_of_days_in_year(str(self.from_date) , str(self.to_date))
+		if not self.employee:
+			frappe.throw("The 'Employee' is mandatory to proceed with the calculations.",
+                title=_("Mandatory Fields")
+            )
+			return 
+		emp_doc = frappe.get_doc('Employee' , self.employee)
+		if not emp_doc.company:
+			frappe.throw("The 'Company' in Employee is mandatory to proceed with the calculations.",
+                title=_("Mandatory Fields")
+            )
+			return 
+		comp_doc = frappe.get_doc ('Company' , emp_doc.company )
+		if self.eos_default_period:
+			from masar_ksa_hrms.masar_ksa_hrms.doctype.utils import eos_validation
+			eos_validation(comp_doc ,table_name = 'custom_comp_eos_table' , rate_name = 'salary_rate')
+			periods_table = comp_doc.custom_comp_eos_table
+		if not self.eos_default_period:
+			if not self.end_of_service_rate:
+				frappe.throw("The 'End of Service Rate' is mandatory to proceed with the calculations.",
+                title=_("Mandatory Fields")
+            	)
+				return 
+			elif self.end_of_service_rate:
+				eos_rate = frappe.get_doc('End of Service Rate' , self.end_of_service_rate )
+				periods_table = eos_rate.eos_table
+		(period_days , 
+			years, 
+				months, 
+					days , 
+						num_days_in_year) = eos_date_in_priod(str(self.from_date) , str(self.to_date))
 		self.working_days = period_days
 		self.years = years
 		self.months = months 
 		self.days = days
+		total_amount , year_amount , month_amount , day_amount = (
+			eos_provision(data = frappe._dict(
+				{
+					'salary': self.eos_salary , 
+					'years' : years,
+					'months' : months,
+					'days':days,
+					'num_days_in_year': num_days_in_year,
+					'termination_name':  self.termination_type,
+					'periods_table' : periods_table
+				}
+			)
+		))
+		self.years_amount =year_amount
+		self.months_amount = month_amount
+		self.day_amount = day_amount
+		self.total_amount = total_amount

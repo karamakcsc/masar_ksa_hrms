@@ -5,7 +5,10 @@ frappe.ui.form.on("End of Service Calculator", {
     calculate: function(frm) {
         frappe.call({
             doc: frm.doc,
-            method:'calculate_eos'
+            method:'calculate_eos', 
+            callback:function(r) {
+                frm.refresh_fields();
+            }
         })
-	},
+	}
 });

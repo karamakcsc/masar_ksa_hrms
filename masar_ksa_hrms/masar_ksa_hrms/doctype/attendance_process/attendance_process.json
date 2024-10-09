@@ -182,6 +182,7 @@
    "fieldname": "overtime_type_od",
    "fieldtype": "Link",
    "label": "Overtime Type",
+   "link_filters": "[[\"Overtime Type\",\"off_day\",\"=\",1]]",
    "options": "Overtime Type",
    "read_only": 1
   },
@@ -201,6 +202,7 @@
    "fieldname": "sc_overtime_od",
    "fieldtype": "Link",
    "label": "Salary Component",
+   "link_filters": "[[\"Salary Component\",\"type\",\"=\",\"Earning\"],[\"Salary Component\",\"custom_is_overtime_applicable\",\"=\",1]]",
    "mandatory_depends_on": "amount_od",
    "options": "Salary Component"
   },
@@ -220,6 +222,7 @@
    "fieldname": "overtime_type_nd",
    "fieldtype": "Link",
    "label": "Overtime Type",
+   "link_filters": "[[\"Overtime Type\",\"normal_day\",\"=\",1]]",
    "options": "Overtime Type",
    "read_only": 1
   },
@@ -235,6 +238,7 @@
    "fieldname": "sc_overtime_nd",
    "fieldtype": "Link",
    "label": "Salary Component",
+   "link_filters": "[[\"Salary Component\",\"type\",\"=\",\"Earning\"],[\"Salary Component\",\"custom_is_overtime_applicable\",\"=\",1]]",
    "mandatory_depends_on": "amount_nd",
    "options": "Salary Component"
   },
@@ -260,6 +264,7 @@
    "fieldname": "overtime_type_hd",
    "fieldtype": "Link",
    "label": "Overtime Type",
+   "link_filters": "[[\"Overtime Type\",\"holidays\",\"=\",1]]",
    "options": "Overtime Type",
    "read_only": 1
   },
@@ -451,7 +456,8 @@
   {
    "fieldname": "leaves_hour_rate",
    "fieldtype": "Float",
-   "label": "Leaves Hour Rate"
+   "label": "Leaves Hour Rate",
+   "read_only": 1
   },
   {
    "fieldname": "short_leaves_tab",
@@ -512,7 +518,7 @@
    "link_fieldname": "custom_att_pro_ref"
   }
  ],
- "modified": "2024-09-11 12:56:36.821761",
+ "modified": "2024-10-03 11:53:44.881590",
  "modified_by": "Administrator",
  "module": "Masar Ksa Hrms",
  "name": "Attendance Process",

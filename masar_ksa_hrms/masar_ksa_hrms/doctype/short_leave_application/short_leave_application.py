@@ -7,8 +7,7 @@ from frappe.model.document import Document
 from datetime import datetime, timedelta
 
 class ShortLeaveApplication(Document):
-    def validate(self):
-        self.shift_validate()
+
     def on_submit(self):
         self.calculate_leave_application()
     def calculate_leave_application(self):
@@ -22,17 +21,20 @@ class ShortLeaveApplication(Document):
                         hours = int(standard_working_hours)
                         minutes = int((standard_working_hours - hours) * 60)
                         swh_in_seconds = hours * 3600 + minutes * 60
-                        application_duration_sql = frappe.db.sql("""
-                                SELECT 
-                                    name , 
-                                    application_duration 
-                                FROM `tabShort Leave Application` tsla 
-                            WHERE 
-                                docstatus = 1 
-                                AND status ='Approved' 
-                                AND balance_deduction =1 
-                                AND to_calaculate = 1 
-                                AND employee = %s""" , (self.employee) , as_dict=True)
+                        sla = frappe.qb.DocType('Short Leave Application')
+                        application_duration_sql = (
+                            frappe.qb.from_(sla)
+                            .select(
+                                (sla.name),
+                                (sla.application_duration)
+                            )
+                            .where(sla.docstatus == 1 )
+                            .where(sla.status == 'Approved')
+                            .where(sla.balance_deduction == 1 )
+                            .where(sla.to_calaculate == 1 )
+                            .where(sla.leave_type == self.leave_type)
+                            .where(sla.employee == self.employee)
+                        ).run(as_dict = True)
                         if len(application_duration_sql) !=0:
                             for app_dur in application_duration_sql:
                                 total_of_duration_before_this_leave += float(app_dur.application_duration)
@@ -181,7 +183,9 @@ class ShortLeaveApplication(Document):
             'from_time' : self.from_time,
             'to_time' : to_time 
             }
-            
+    def validate(self):
+        self.shift_validate()     
+           
     def shift_validate(self):
         if (self.salary_deduction + self.balance_deduction + self.none_deduction )!= 1:
             frappe.throw("""At least one of the following must be selected:
