@@ -1,6 +1,6 @@
 {
  "charts": [],
- "content": "[{\"id\":\"YY4lllD6Qn\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Masar HRMS</span>\",\"col\":12}},{\"id\":\"OjtuetbMrq\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"MIM4sNxai1\",\"type\":\"paragraph\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Your Shortcuts</span>\",\"col\":12}},{\"id\":\"J9ed04lGWb\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Overtime Type\",\"col\":4}},{\"id\":\"GRf5CfcbzN\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Termination Type\",\"col\":4}},{\"id\":\"heLBNiYlV8\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Attendance Process\",\"col\":4}},{\"id\":\"s1zhpD0a-j\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Attendance Process Bulk\",\"col\":4}},{\"id\":\"JE6JkIch_r\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Attendance Shortage\",\"col\":4}},{\"id\":\"jPg84Iteef\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Short Leave Application\",\"col\":4}},{\"id\":\"hoHB1KWTHK\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Employee Shift Management\",\"col\":4}},{\"id\":\"qUPcVqED1Z\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Employee Shift Management Bulk\",\"col\":4}},{\"id\":\"WQBnuf9gjF\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"NPS47fKLDq\",\"type\":\"paragraph\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Master Data</span>\",\"col\":12}},{\"id\":\"VjITrow-HZ\",\"type\":\"card\",\"data\":{\"card_name\":\"Master Data\",\"col\":4}},{\"id\":\"u7OTEPKScm\",\"type\":\"card\",\"data\":{\"card_name\":\"Types\",\"col\":4}},{\"id\":\"GJRawmiQjn\",\"type\":\"card\",\"data\":{\"card_name\":\"Bulk\",\"col\":4}},{\"id\":\"rEDKwOoik3\",\"type\":\"card\",\"data\":{\"card_name\":\"Reports\",\"col\":4}}]",
+ "content": "[{\"id\":\"YY4lllD6Qn\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Masar HRMS</span>\",\"col\":12}},{\"id\":\"OjtuetbMrq\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"MIM4sNxai1\",\"type\":\"paragraph\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Your Shortcuts</span>\",\"col\":12}},{\"id\":\"J9ed04lGWb\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Overtime Type\",\"col\":4}},{\"id\":\"GRf5CfcbzN\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Termination Type\",\"col\":4}},{\"id\":\"heLBNiYlV8\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Attendance Process\",\"col\":4}},{\"id\":\"s1zhpD0a-j\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Attendance Process Bulk\",\"col\":4}},{\"id\":\"JE6JkIch_r\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Attendance Shortage\",\"col\":4}},{\"id\":\"jPg84Iteef\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Short Leave Application\",\"col\":4}},{\"id\":\"hoHB1KWTHK\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Employee Shift Management\",\"col\":4}},{\"id\":\"qUPcVqED1Z\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Employee Shift Management Bulk\",\"col\":4}},{\"id\":\"qhak80tJ1B\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Employee Deduction\",\"col\":4}},{\"id\":\"NSeikbPA6a\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Employee Deduction Bulk\",\"col\":4}},{\"id\":\"IKwiQCBc_3\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Employee Incentive Bulk\",\"col\":4}},{\"id\":\"ZyKan27q-6\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Employee Salary Component History\",\"col\":4}},{\"id\":\"cNQ08eCxds\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Employee Salary Component Management\",\"col\":4}},{\"id\":\"Zr896NkTF9\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"End of Service Provision\",\"col\":4}},{\"id\":\"JVnxQpSju_\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"End of Service Rate\",\"col\":4}},{\"id\":\"WQBnuf9gjF\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"NPS47fKLDq\",\"type\":\"paragraph\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Master Data</span>\",\"col\":12}},{\"id\":\"VjITrow-HZ\",\"type\":\"card\",\"data\":{\"card_name\":\"Master Data\",\"col\":4}},{\"id\":\"u7OTEPKScm\",\"type\":\"card\",\"data\":{\"card_name\":\"Types\",\"col\":4}},{\"id\":\"GJRawmiQjn\",\"type\":\"card\",\"data\":{\"card_name\":\"Bulk\",\"col\":4}},{\"id\":\"rEDKwOoik3\",\"type\":\"card\",\"data\":{\"card_name\":\"Reports\",\"col\":4}}]",
  "creation": "2024-09-24 10:08:30.995825",
  "custom_blocks": [],
  "docstatus": 0,
@@ -13,55 +13,6 @@
  "is_hidden": 0,
  "label": "Masar HRMS",
  "links": [
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Master Data",
-   "link_count": 4,
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Attendance Process",
-   "link_count": 0,
-   "link_to": "Attendance Process",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Attendance Shortage",
-   "link_count": 0,
-   "link_to": "Attendance Shortage",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Short Leave Application",
-   "link_count": 0,
-   "link_to": "Short Leave Application",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Employee Shift Management",
-   "link_count": 0,
-   "link_to": "Employee Shift Management",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
   {
    "hidden": 0,
    "is_query_report": 0,
@@ -87,35 +38,6 @@
    "label": "Termination Type",
    "link_count": 0,
    "link_to": "Termination Type",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Bulk",
-   "link_count": 2,
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Attendance Process Bulk",
-   "link_count": 0,
-   "link_to": "Attendance Process Bulk",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Employee Shift Management Bulk",
-   "link_count": 0,
-   "link_to": "Employee Shift Management Bulk",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
@@ -168,9 +90,167 @@
    "link_type": "Report",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Bulk",
+   "link_count": 4,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Attendance Process Bulk",
+   "link_count": 0,
+   "link_to": "Attendance Process Bulk",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Employee Shift Management Bulk",
+   "link_count": 0,
+   "link_to": "Employee Shift Management Bulk",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Employee Deduction Bulk",
+   "link_count": 0,
+   "link_to": "Employee Deduction Bulk",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Employee Incentive Bulk",
+   "link_count": 0,
+   "link_to": "Employee Incentive Bulk",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Master Data",
+   "link_count": 10,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Attendance Process",
+   "link_count": 0,
+   "link_to": "Attendance Process",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Attendance Shortage",
+   "link_count": 0,
+   "link_to": "Attendance Shortage",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Short Leave Application",
+   "link_count": 0,
+   "link_to": "Short Leave Application",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Employee Shift Management",
+   "link_count": 0,
+   "link_to": "Employee Shift Management",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Employee Deduction",
+   "link_count": 0,
+   "link_to": "Employee Deduction",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Employee Salary Component History",
+   "link_count": 0,
+   "link_to": "Employee Salary Component History",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Employee Salary Component Management",
+   "link_count": 0,
+   "link_to": "Employee Salary Component Management",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "End of Service Provision",
+   "link_count": 0,
+   "link_to": "End of Service Provision",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "End of Service Rate",
+   "link_count": 0,
+   "link_to": "End of Service Rate",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "End of Service Calculator",
+   "link_count": 0,
+   "link_to": "End of Service Calculator",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2024-10-07 11:41:17.474300",
+ "modified": "2024-10-09 16:07:14.277282",
  "modified_by": "Administrator",
  "module": "Masar Ksa Hrms",
  "name": "Masar HRMS",
@@ -185,8 +265,40 @@
   {
    "color": "Grey",
    "doc_view": "List",
+   "label": "Employee Deduction",
+   "link_to": "Employee Deduction",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Employee Salary Component Management",
+   "link_to": "Employee Salary Component Management",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
    "label": "Overtime Type",
    "link_to": "Overtime Type",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Employee Deduction Bulk",
+   "link_to": "Employee Deduction Bulk",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "End of Service Provision",
+   "link_to": "End of Service Provision",
    "stats_filter": "[]",
    "type": "DocType"
   },
@@ -201,8 +313,32 @@
   {
    "color": "Grey",
    "doc_view": "List",
+   "label": "Employee Incentive Bulk",
+   "link_to": "Employee Incentive Bulk",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "End of Service Rate",
+   "link_to": "End of Service Rate",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
    "label": "Attendance Process",
    "link_to": "Attendance Process",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Employee Salary Component History",
+   "link_to": "Employee Salary Component History",
    "stats_filter": "[]",
    "type": "DocType"
   },
