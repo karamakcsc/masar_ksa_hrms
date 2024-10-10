@@ -69,7 +69,7 @@ class EndofServiceCalculator(Document):
 			years, 
 				months, 
 					days , 
-						num_days_in_year) = eos_date_in_priod(str(self.from_date) , str(self.to_date))
+						num_days_in_year) = eos_date_in_priod(emp_doc.company, str(self.from_date) , str(self.to_date))
 		self.working_days = period_days
 		self.years = years
 		self.months = months 

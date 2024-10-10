@@ -73,9 +73,10 @@ class AttendanceProcess(Document):
 						self.from_date = date['from_date']
 						self.to_date = date['to_date']
 				if self.employee:
-					employee_doc = frappe.get_doc('Employee' , self.employee)
 					payroll_settings = frappe.get_doc('Payroll Settings')
-					working_day_30 = payroll_settings.working_day_30
+					employee_doc = frappe.get_doc('Employee' , self.employee)
+					company_doc = frappe.get_doc('Company' , self.compsny)
+					working_day_30= company_doc.custom_working_day_30
 					if working_day_30 == 1 :
 						return 30
 					if employee_doc.default_shift:

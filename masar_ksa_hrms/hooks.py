@@ -297,7 +297,8 @@ fixtures = [
                 # Shift Assignment
                 "Shift Assignment-custom_employee_shift_management",
                 # Company
-                "Company-custom_salary", 
+                "Company-custom_salary",
+                "Company-custom_working_day_30" ,
                 "Company-custom_end_of_service_info",
                 "Company-custom_comp_eos_table",
                 "Company-custom_end_of_service_accounts",
@@ -340,22 +341,4 @@ fixtures = [
                 ]
         ]
     ]},
-    {"dt": "Payroll Settings", "filters": [
-            {
-                "doctype": "Payroll Settings", 
-                "value": 0, 
-                "fieldname": "working_day_30" ,
-                "fieldtype": "Check", 
-                "label": "Working Day 30"
-            }
-    ]},
-    {"dt": "Payroll Settings", "filters": [
-            {
-                "doctype": "Payroll Settings", 
-                "value": 0, 
-                "fieldname": "jv_group_by" ,
-                "fieldtype": "Check", 
-                "label": "Process Payroll Accounting Entry Based on Employee (Company Accounting)"
-            }
-    ]}
 ]

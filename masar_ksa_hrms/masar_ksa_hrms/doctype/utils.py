@@ -147,14 +147,14 @@ def get_date_details(from_date_str , to_date_str):
 
 def group_by():
         setting = frappe.get_doc('Payroll Settings')
-        if setting.jv_group_by == 1 :
+        if setting.process_payroll_accounting_entry_based_on_employeeprocess_payroll_accounting_entry_based_on_employee == 1 :
                 return 'Employee'
-        elif setting.jv_group_by == 0 :
+        elif setting.process_payroll_accounting_entry_based_on_employeeprocess_payroll_accounting_entry_based_on_employee == 0 :
                 return 'Cost Center'
 
-def eos_date_in_priod(from_date_str , to_date_str):
-    payroll_settings = frappe.get_doc('Payroll Settings')
-    working_day_30 = payroll_settings.working_day_30
+def eos_date_in_priod(company , from_date_str , to_date_str):
+    company_doc = frappe.get_doc('company' , company)
+    working_day_30 = company_doc.custom_working_day_30
     if working_day_30 == 1 :
         (total_days ,
         years, 

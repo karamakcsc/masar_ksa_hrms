@@ -291,7 +291,7 @@ def create_emp_eos_peroision(date , data):
 		months, 
                 days , 
 		num_days_in_year
-        ) = eos_date_in_priod(str(emp_doc.date_of_joining) , str(date.end_date))
+        ) = eos_date_in_priod( data.company , str(emp_doc.date_of_joining) , str(date.end_date))
         (total_amount , 
          year_amount , 
          month_amount , 
