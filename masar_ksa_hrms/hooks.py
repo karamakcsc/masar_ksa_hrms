@@ -348,6 +348,14 @@ fixtures = [
                 "fieldtype": "Check", 
                 "label": "Working Day 30"
             }
+    ]},
+    {"dt": "Payroll Settings", "filters": [
+            {
+                "doctype": "Payroll Settings", 
+                "value": 0, 
+                "fieldname": "jv_group_by" ,
+                "fieldtype": "Check", 
+                "label": "Process Payroll Accounting Entry Based on Employee (Company Accounting)"
+            }
     ]}
-
 ]
