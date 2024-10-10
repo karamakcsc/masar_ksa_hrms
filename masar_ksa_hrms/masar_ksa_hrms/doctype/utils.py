@@ -153,7 +153,7 @@ def group_by():
                 return 'Cost Center'
 
 def eos_date_in_priod(company , from_date_str , to_date_str):
-    company_doc = frappe.get_doc('company' , company)
+    company_doc = frappe.get_doc('Company' , company)
     working_day_30 = company_doc.custom_working_day_30
     if working_day_30 == 1 :
         (total_days ,
