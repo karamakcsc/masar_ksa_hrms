@@ -147,9 +147,9 @@ def get_date_details(from_date_str , to_date_str):
 
 def group_by():
         setting = frappe.get_doc('Payroll Settings')
-        if setting.process_payroll_accounting_entry_based_on_employeeprocess_payroll_accounting_entry_based_on_employee == 1 :
+        if setting.process_payroll_accounting_entry_based_on_employee == 1 :
                 return 'Employee'
-        elif setting.process_payroll_accounting_entry_based_on_employeeprocess_payroll_accounting_entry_based_on_employee == 0 :
+        elif setting.process_payroll_accounting_entry_based_on_employee == 0 :
                 return 'Cost Center'
 
 def eos_date_in_priod(company , from_date_str , to_date_str):
