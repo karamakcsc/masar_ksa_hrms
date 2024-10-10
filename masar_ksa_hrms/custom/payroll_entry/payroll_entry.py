@@ -327,7 +327,7 @@ def create_emp_eos_peroision(date , data):
                      'total_amount' : round(total_amount , 3), 
                      'provision' : round(total_amount , 3) 
                 })
-        if len(eosp.perovisions) == 0:
+        if len(eosp.provisions) == 0:
                 row['pervious_provision'] = 0
                 row['provision_diff'] = round(total_amount , 3)
                 return_amount = round(total_amount , 3)
@@ -336,7 +336,7 @@ def create_emp_eos_peroision(date , data):
                 row['pervious_provision'] = pervious_provision
                 row['provision_diff'] = round((total_amount - pervious_provision) ,3)
                 return_amount = round((total_amount - pervious_provision) ,3)
-        row_added = eosp.append('perovisions' , row)
+        row_added = eosp.append('provisions' , row)
         eosp.total_amount= round(total_amount , 3)
         eosp.run_method('save')
         dict_to_return = frappe._dict({
