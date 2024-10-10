@@ -4,8 +4,8 @@ from masar_ksa_hrms.masar_ksa_hrms.doctype.utils import eos_validation
 
 def validate(self , method):
     check_numbers_length(self)
-    check_salary_components(self)
-    check_basic_salary(self)
+    # # check_salary_components(self)
+    # check_basic_salary(self)
     
     
 def check_salary_components(self):
