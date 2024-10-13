@@ -40,15 +40,13 @@ def get_data(filters):
 							tss.payment_days AS `Payment Days`,
 							MAX(CASE WHEN tsd.salary_component = 'Basic' THEN tsd.amount END) AS `Basic Salary`,
 							tssa.base AS `Original Basic Salary`,
-							MAX(CASE WHEN tsd.salary_component = 'Overtime Allowance' THEN tsd.amount END) AS `Overtime Allowance`,
-							MAX(CASE WHEN tsd.salary_component IN ('Awards IN __ OUT', 'Non Taxable Bonus', 'End Service Awards', 'Project Awards', 'Award', 'Bonus IN-OUT') THEN tsd.amount END) AS `Awards`,
-							(SELECT SUM(IF(tsd.salary_component NOT IN ('Overtime Allowance', 'Basic', 'Awards IN __ OUT', 'Non Taxable Bonus', 'End Service Awards', 'Project Awards', 'Award', 'Bonus IN-OUT'), tsd.amount, 0))
+							MAX(CASE WHEN tsd.salary_component IN ('Overtime-Sales', 'Overtime-Production', 'Overtime-Management') THEN tsd.amount END) AS `Overtime Allowance`,
+							(SELECT SUM(IF(tsd.salary_component NOT IN ('Overtime-Sales', 'Overtime-Production', 'Overtime-Management', 'Basic', 'Awards IN __ OUT', 'Non Taxable Bonus', 'End Service Awards', 'Project Awards', 'Award', 'Bonus IN-OUT'), tsd.amount, 0))
 							FROM `tabSalary Detail` tsd
 							WHERE tsd.parent = tss.name AND tsd.parentfield = 'earnings') AS `Other Earnings`,
 							tss.gross_pay AS `Total Earnings`,
-							MAX(CASE WHEN tsd.salary_component = 'Social Security' THEN tsd.amount END) AS `Social Security`,
-							MAX(CASE WHEN tsd.salary_component = 'Income Tax' THEN tsd.amount END) AS `Income Tax`,
-							(SELECT SUM(IF(tsd.salary_component NOT IN ('Income Tax', 'Social Security'), tsd.amount, 0))
+							MAX(CASE WHEN tsd.salary_component IN ('GOSI Deduction-Sales', 'GOSI Deduction-Production', 'GOSI Deduction-Management') THEN tsd.amount END) AS `GOSI`,
+							(SELECT SUM(IF(tsd.salary_component NOT IN ('GOSI Deduction-Sales', 'GOSI Deduction-Production', 'GOSI Deduction-Management'), tsd.amount, 0))
 							FROM `tabSalary Detail` tsd
 							WHERE tsd.parent = tss.name AND tsd.parentfield = 'deductions') AS `Other Deductions`,
 							tss.total_deduction AS `Total Deductions`,
@@ -86,11 +84,9 @@ def get_columns():
 	   "Basic Salary: Currency:150",
 	   "Original Basic Salary: Currency:150",
 	   "Overtime Allowance: Currency:150",
-	   "Awards: Currency:150",
 	   "Other Earnings: Currency:150",
 	   "Total Earnings: Currency:150",
-	   "Social Security: Currency:150",
-	   "Income Tax: Currency:150",
+	   "GOSI: Currency:150",
 	   "Other Deductions: Currency:150",
 	   "Total Deductions: Currency:150",
 	   "Net Pay: Currency:150",
