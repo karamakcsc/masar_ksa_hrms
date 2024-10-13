@@ -929,7 +929,7 @@
   "length": 0,
   "link_filters": null,
   "mandatory_depends_on": "eval:doc.custom_nationality != \"Saudi Arabia\"",
-  "modified": "2024-09-18 11:14:49.987757",
+  "modified": "2024-10-13 12:20:13.646672",
   "module": null,
   "name": "Employee-custom_citizen_number",
   "no_copy": 0,
@@ -967,7 +967,7 @@
   "fetch_from": null,
   "fetch_if_empty": 0,
   "fieldname": "custom_nationality_number",
-  "fieldtype": "Int",
+  "fieldtype": "Data",
   "hidden": 0,
   "hide_border": 0,
   "hide_days": 0,
@@ -985,7 +985,7 @@
   "length": 0,
   "link_filters": null,
   "mandatory_depends_on": "eval:doc.custom_nationality == \"Saudi Arabia\"",
-  "modified": "2024-09-18 11:14:20.270378",
+  "modified": "2024-10-13 12:18:06.948893",
   "module": null,
   "name": "Employee-custom_nationality_number",
   "no_copy": 0,
@@ -1005,7 +1005,7 @@
   "sort_options": 0,
   "translatable": 0,
   "unique": 0,
-  "width": ""
+  "width": null
  },
  {
   "allow_in_quick_entry": 0,
