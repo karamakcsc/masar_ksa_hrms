@@ -7,31 +7,37 @@ import frappe
 def execute(filters=None):
 	return columns(), data(filters), None
 
-def data(filters):
-    conditons = "tap.docstatus = 1"
-    
-    _from, to = filters.get('from'), filters.get('to')
-    
-    if filters.get('employee'):
-        conditons += f" AND tap.employee = '{filters.get('employee')}'"
-        
-    if filters.get('department'):
-        conditons += f" AND tap.department = '{filters.get('department')}'"
-        
-    if _from and to:
-        conditons += f" AND tap.posting_date BETWEEN '{_from}' AND '{to}'"
-        
-    data = frappe.db.sql(f"""
-                        	SELECT
-								tap.employee, tap.employee_name, tap.department, tap.posting_date,
-								tap.from_date, tap.to_date, tap.working_day, tap.basic_salary, tap.basic_salary_with_allowances,
-								tap.leaves_salary, tap.bs_hour_rate, tap.bswa_hour_rate, tap.leaves_hour_rate,
-								tap.ot_total_amount, tap.total_amount
-							FROM `tabAttendance Process` tap
-							WHERE {conditons}
-                         """)
-    return data
 
+
+
+def data(filters):
+    ap = frappe.qb.DocType('Attendance Process')
+    query = (
+        frappe.qb.from_(ap)
+        .select(
+            (ap.employee), 
+            (ap.employee_name), 
+            (ap.department), 
+            (ap.posting_date),
+			(ap.from_date), 
+            (ap.to_date), 
+            (ap.working_day), 
+            (ap.basic_salary), 
+            (ap.basic_salary_with_allowances),
+			(ap.leaves_salary), 
+            (ap.bs_hour_rate), 
+            (ap.bswa_hour_rate), 
+            (ap.leaves_hour_rate),
+			(ap.ot_total_amount), 
+            (ap.total_amount)
+		)
+	)
+    if filters.get('from') and filters.get('to'):
+        query  = query.where(ap.posting_date.between(filters.get("from_date"), filters.get("to_date")) )
+    
+    query = query.where(ap.employee == filters.get('employee')) if filters.get('employee') else query=query
+    query = query.where(ap.department == filters.get('department')) if filters.get('department') else query=query
+    return query.run()
 def columns():
     return [
 		"Employee: Link/Employee:150",
@@ -50,3 +56,4 @@ def columns():
 		"Total Amount For Overtime: Float:250",
 		"Total Amount For Leaves: Float:250",
 	]
+	

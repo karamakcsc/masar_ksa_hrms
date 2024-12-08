@@ -60,25 +60,23 @@ class EmployeeSalaryComponentManagement(Document):
         
     @frappe.whitelist()
     def get_basic_salary_component(self):
-        if self.company:
-            default_sc_sql = frappe.db.sql("""
-                                       SELECT custom_salary_component FROM tabCompany tc 
-                                       WHERE name = %s
-                                       """ , (self.company) , as_dict = True)
-            if len(default_sc_sql) != 0 : 
-                return default_sc_sql[0]['custom_salary_component']
-            else: 
-                return None
-        elif self.employee:
+        if self.employee:
             emp_doc = frappe.get_doc('Employee' , self.employee )
-            if emp_doc.company:
-                comp_doc = frappe.get_doc('Company' , emp_doc.company)
-                salary_component = comp_doc.custom_salary_component
-                return salary_component
-            else :
-                return None
-        else:
-            return None 
+            if self.company:
+                comp_doc = frappe.get_doc('Company' ,self.company)
+            elif self.employee: 
+                comp_doc = frappe.get_doc('Company' ,emp_doc.company)
+            salary_components = list()
+            if comp_doc.custom_salary_component: 
+                salary_components.append(comp_doc.custom_salary_component)
+            if self.department:
+                dep_doc = frappe.get_doc('Department' , self.department)
+                if dep_doc.custom_salary_component: 
+                    salary_components.append(dep_doc.custom_salary_component)
+            if len(salary_components) !=0 : 
+                return salary_components
+            else:
+                return None 
                 
     @frappe.whitelist()
     def get_emp_social_security_info(self):
@@ -267,7 +265,7 @@ class EmployeeSalaryComponentManagement(Document):
         ss_salary = 0 
         eos_salary = 0
         for sal in comp_list:
-            if basic_sal_comp == sal.sal_comp:
+            if sal.sal_comp in basic_sal_comp:
                 deduction_salary += sal.amount
                 salary_with_allowance+= sal.amount
                 ss_salary+= sal.amount
@@ -283,6 +281,10 @@ class EmployeeSalaryComponentManagement(Document):
                         ss_salary+= sal.amount
                     if comp_doc.custom_is_short_leave_applicable:
                         deduction_salary += sal.amount
+        self.deduction_salary = deduction_salary
+        self.basic_salary_with_allowance = salary_with_allowance
+        self.ss_salary = ss_salary
+        self.eos_salary = eos_salary
         return {
             'deduction_salary':deduction_salary , 
             'basic_salary_with_allowance':salary_with_allowance,
@@ -292,7 +294,9 @@ class EmployeeSalaryComponentManagement(Document):
         
     def validate(self):
         self.check_ss_numbers_length()
-        self.check_housing()  
+        self.check_housing()
+        self.salary_calculation()
+        self.calculate_ss_amount()
                   
     def check_housing(self):
         if self.is_housing_applicable:

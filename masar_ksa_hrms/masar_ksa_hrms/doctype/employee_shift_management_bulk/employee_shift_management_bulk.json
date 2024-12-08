@@ -23,8 +23,6 @@
   "sunday_st",
   "tuesday_st",
   "thursday_st",
-  "section_break_xegl",
-  "amended_from",
   "employees_tab",
   "employees_filter_section",
   "department",
@@ -35,7 +33,9 @@
   "emp_table",
   "connections_tab",
   "series_details_section",
-  "naming_series"
+  "naming_series",
+  "column_break_skpy",
+  "amended_from"
  ],
  "fields": [
   {
@@ -48,7 +48,7 @@
    "fieldname": "naming_series",
    "fieldtype": "Select",
    "label": "Series",
-   "options": "HR-SHTB-.YYYY.-"
+   "options": "HR-SHMB-.YYYY.-"
   },
   {
    "fieldname": "details_section",
@@ -147,10 +147,6 @@
    "options": "Shift Type"
   },
   {
-   "fieldname": "section_break_xegl",
-   "fieldtype": "Section Break"
-  },
-  {
    "fieldname": "amended_from",
    "fieldtype": "Link",
    "label": "Amended From",
@@ -220,6 +216,10 @@
    "fieldtype": "Tab Break",
    "label": "Connections",
    "show_dashboard": 1
+  },
+  {
+   "fieldname": "column_break_skpy",
+   "fieldtype": "Column Break"
   }
  ],
  "index_web_pages_for_search": 1,
@@ -230,7 +230,7 @@
    "link_fieldname": "reference_bulk"
   }
  ],
- "modified": "2024-08-28 10:37:26.562600",
+ "modified": "2024-12-03 11:19:43.836529",
  "modified_by": "Administrator",
  "module": "Masar Ksa Hrms",
  "name": "Employee Shift Management Bulk",

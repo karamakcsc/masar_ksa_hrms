@@ -5,7 +5,6 @@ import frappe
 from frappe import _
 from frappe.model.document import Document
 
-
 class EmployeeShiftManagement(Document):
 	
 	def validate(self):
@@ -21,30 +20,49 @@ class EmployeeShiftManagement(Document):
 				SELECT name , employee
 				FROM `tabEmployee Shift Management` tesm 
 				WHERE docstatus =1  AND employee = %s AND %s BETWEEN tesm.start_date AND tesm.end_date ;
-			""", (self.employee , str(self.start_date)), as_dict=True)
+		""", (self.employee , str(self.start_date)), as_dict=True)
 		if sql and sql[0]:
-			frappe.throw("""Employee:<b> {emp} </b> has Employee Shift Management : <b> {esm} </b>
-				in the same period """.format(emp= sql[0]['employee'] , esm= sql[0]['name']) , 
-				title=_("Exist Employee Shift Management"))
+			frappe.throw("""
+                Employee:<b> {emp} </b> has Employee Shift Management : <b> {esm} </b>
+				in the same period 
+    			""".format(emp= sql[0]['employee'] , esm= sql[0]['name']) , 
+				title=_("Exist Employee Shift Management")
+    		)
 
 	
 	def check_active_status(self):
-		sql = frappe.db.sql("""
-			SELECT name 
-			FROM `tabEmployee Shift Management` tesm 
-       		WHERE docstatus = 1 AND status = 'Active' 
-			AND employee = %s """ , (self.employee) , as_dict=True)
+		esm = frappe.qb.DocType(self.doctype)
+		sql = (
+			frappe.qb.from_(esm)
+			.select(esm.name)
+			.where(esm.docstatus ==1 )
+			.where(esm.status == 'Active')
+			.where(esm.employee == self.employee )
+			.where(esm.end_date > self.start_date)
+		).run(as_dict=True)
 		if sql and sql[0]:
-			frappe.throw(f"Employee {str(self.employee)} Alredy Exist Active Status in {str(sql[0]['name'])}")
+			frappe.throw(f"Employee {str(self.employee)} Alredy Exist Active Status in {str(sql[0]['name'])} In the same Period")
 
 	def create_shift_assignment(self):
-		result = frappe.db.sql ("""
-        SELECT employee ,posting_date , start_date , end_date , saturday_st , sunday_st ,
-            monday_st , tuesday_st , wednesday_st , thursday_st , 
-            friday_st
-            FROM `tabEmployee Shift Management` tesm 
-            WHERE name = %s
-        """ , (self.name) , as_dict =True)
+		esm = frappe.qb.DocType(self.doctype)
+		sa = frappe.qb.DocType('Shift Assignment')
+		result = (
+			frappe.qb.from_(esm)
+			.select(
+				(esm.employee) ,
+				(esm.posting_date) , 
+				(esm.start_date) , 
+				(esm.end_date) , 
+				(esm.saturday_st) , 
+				(esm.sunday_st ) , 
+            	(esm.monday_st) , 
+				(esm.tuesday_st) , 
+				(esm.wednesday_st) , 
+				(esm.thursday_st) , 
+            	(esm.friday_st)
+			)
+			.where(esm.name == self.name)
+			).run(as_dict = True)
 		employee = result[0]['employee']
 		start_date = result[0]['start_date']
 		end_date = result[0]['end_date']
@@ -64,18 +82,19 @@ class EmployeeShiftManagement(Document):
 		for i in shift_type:
 			if 'None' in shift_type:
 				shift_type.remove('None')
-		shift_management = frappe.db.sql("""
-		SELECT name  
-		FROM `tabShift Assignment` tsa 
-		WHERE employee = %s  AND status = 'Active' 
-		""" , (employee), as_dict = True)
+
+		shift_management = (
+			frappe.qb.from_(sa)
+			.select(sa.name)
+			.where(sa.employee == employee )
+			.where(sa.status == 'Active')
+		).run(as_dict = True)
 		if shift_management:
 			for status in shift_management:
 				shift_management_name = status.get('name')
 				frappe.db.set_value('Shift Assignment' , shift_management_name , 'status', 'Inactive')
 				doc = frappe.get_doc('Shift Assignment', shift_management_name)
 				doc.save()
-
 		for type in shift_type:
 			shift = frappe.new_doc('Shift Assignment')
 			shift.employee = employee

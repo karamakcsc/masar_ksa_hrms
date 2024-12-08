@@ -17,7 +17,6 @@ function GetFilter(frm){
         return {
             filters: {
                 type: 'Earning',
-                custom_is_overtime_applicable:1
             },
         };
     });

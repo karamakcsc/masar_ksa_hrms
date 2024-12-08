@@ -21,7 +21,7 @@ def get_data(filters):
 		.join(e)
 		.on(e.name == ss.employee)
 		.join(ss_sub).on(ss_sub.name == ss.name)
-		.where(ss.docstatus == 1 )
+		.where(ss.docstatus == 0 )
 		.where(ss_sub.name == ss.name)
 		.where(ssa.docstatus ==1 )
 		.groupby(ss.name, ss.net_pay , ssa.base)
@@ -133,11 +133,11 @@ def get_columns():
 	   "Original Basic Salary: Currency:150",
 	   "Overtime Allowance: Currency:150",
 	   "Other Earnings: Currency:150",
-	   "Total Earnings: Currency:150",
+	   "Total Earnings: Currency:150"
 	   "GOSI: Currency:150",
 	   "Other Deductions: Currency:150",
 	   "Total Deductions: Currency:150",
 	   "Net Pay: Currency:150",
 	   "Posting Month: Data/Posting Month:150",
-	   "Mode Of Payment: Data/Mode Of Paymnet:150" 
+	   "Mode of Payment: Data/Mode of Payment"
 	]

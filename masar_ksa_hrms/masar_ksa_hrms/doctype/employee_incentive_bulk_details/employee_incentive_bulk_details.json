@@ -12,7 +12,7 @@
   "employee_grade",
   "column_break_ggyu",
   "department",
-  "country",
+  "nationality",
   "branch",
   "employment_type"
  ],
@@ -21,6 +21,7 @@
    "fieldname": "employee",
    "fieldtype": "Link",
    "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Employee",
    "options": "Employee"
   },
@@ -29,6 +30,7 @@
    "fieldname": "employee_name",
    "fieldtype": "Data",
    "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Employee Name",
    "read_only": 1
   },
@@ -36,7 +38,6 @@
    "fetch_from": "employee.designation",
    "fieldname": "designation",
    "fieldtype": "Link",
-   "in_list_view": 1,
    "label": "Designation",
    "options": "Designation",
    "read_only": 1
@@ -45,7 +46,6 @@
    "fetch_from": "employee.grade",
    "fieldname": "employee_grade",
    "fieldtype": "Link",
-   "in_list_view": 1,
    "label": "Employee Grade",
    "options": "Employee Grade",
    "read_only": 1
@@ -59,24 +59,15 @@
    "fieldname": "department",
    "fieldtype": "Link",
    "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Department",
    "options": "Department",
-   "read_only": 1
-  },
-  {
-   "fetch_from": "employee.custom_nationality",
-   "fieldname": "country",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Country",
-   "options": "Country",
    "read_only": 1
   },
   {
    "fetch_from": "employee.branch",
    "fieldname": "branch",
    "fieldtype": "Link",
-   "in_list_view": 1,
    "label": "Branch",
    "options": "Branch",
    "read_only": 1
@@ -85,16 +76,25 @@
    "fetch_from": "employee.employment_type",
    "fieldname": "employment_type",
    "fieldtype": "Link",
-   "in_list_view": 1,
    "label": "Employment Type",
    "options": "Employment Type",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "employee.custom_nationality",
+   "fieldname": "nationality",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Nationality",
+   "options": "Country",
    "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2024-09-26 15:48:54.915776",
+ "modified": "2024-12-03 14:49:36.408226",
  "modified_by": "Administrator",
  "module": "Masar Ksa Hrms",
  "name": "Employee Incentive Bulk Details",

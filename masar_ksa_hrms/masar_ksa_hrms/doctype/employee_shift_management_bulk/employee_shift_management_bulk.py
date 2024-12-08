@@ -6,7 +6,6 @@ from datetime import datetime
 from frappe import _
 from frappe.model.document import Document
 
-
 class EmployeeShiftManagementBulk(Document):
 	def validate(self):
 		self.update_employee_no()
@@ -15,12 +14,23 @@ class EmployeeShiftManagementBulk(Document):
 	@frappe.whitelist()
 	def get_employees(self):
 		self.emp_table =[]
-		cond = " 1=1"
+		e = frappe.qb.DocType('Employee')
+		employees = (
+			frappe.qb.from_(e)
+			.select(
+				(e.name),
+				(e.employee_name),
+				(e.department),
+				(e.custom_nationality)
+			)
+   			.where(e.status == 'Active')
+
+		)
 		if self.department:
-			cond += " AND te.department = '{department}'".format(department=self.department)
+			employees = employees.where(e.department == self.department)
 		if self.nationality:
-			cond += " AND te.custom_nationality = '{nationality}'".format(nationality=self.nationality)
-		employees = frappe.db.sql(f"SELECT name , employee_name , department , custom_nationality FROM `tabEmployee` te WHERE {cond}" , as_dict=True)
+			employees = employees.where(e.custom_nationality == self.nationality)
+		employees = employees.run(as_dict=True)
 		for employee in employees:
 			self.append('emp_table',{
 				'employee' :employee.name,
@@ -37,24 +47,41 @@ class EmployeeShiftManagementBulk(Document):
 				alert=True,
 				indicator="blue",
 			)
-		employees = frappe.db.sql("""
-			select 	tesmb.name , 
-					tesmbd.employee ,
-					tesmbd.employee_name ,
-					tesmbd.department ,
-					tesmbd.nationality 
-			FROM `tabEmployee Shift Management Bulk` tesmb 
-			INNER JOIN `tabEmployee Shift Management Bulk Details` tesmbd ON tesmb.name = tesmbd.parent 
-			WHERE tesmb.name = %s
-		""" , (self.name) , as_dict=True)
+		esmbd = frappe.qb.DocType('Employee Shift Management Bulk Details')
+		esmb = frappe.qb.DocType('Employee Shift Management Bulk')
+		esm = frappe.qb.DocType('Employee Shift Management')
+		employees = (
+			frappe.qb.from_(esmb)
+			.join(esmbd).on(esmb.name == esmbd.parent )
+			.select(
+				(esmbd.name),
+				(esmbd.employee),
+				(esmbd.employee_name),
+				(esmbd.department),
+				(esmbd.nationality)
+			)
+			.where(esmb.name == self.name)
+		).run(as_dict = True)
 		exist_esm = list()
+		start_date = datetime.strptime(str(self.start_date), "%Y-%m-%d")
+		start_month = start_date.month
+		start_year = start_date.year
+		end_date = datetime.strptime(str(self.end_date), "%Y-%m-%d")
+		end_month = end_date.month
+		end_year = end_date.year
 		for employee in employees:
-			sql = frappe.db.sql("""
-				SELECT name , employee
-				FROM `tabEmployee Shift Management` tesm 
-				WHERE docstatus =1  AND employee = %s AND %s BETWEEN tesm.start_date AND tesm.end_date ;
-			""", (employee.employee , str(self.start_date)), as_dict=True)
-
+			query ="""
+					SELECT name, employee
+					FROM `tabEmployee Shift Management` esm
+					WHERE esm.docstatus = 1
+					AND esm.employee = %s
+					AND MONTH(esm.start_date) = %s
+					AND YEAR(esm.start_date) = %s
+					AND MONTH(esm.end_date) = %s
+					AND YEAR(esm.end_date) = %s
+				"""
+			params = (employee.employee, start_month, start_year, end_month, end_year)
+			sql = frappe.db.sql(query, params, as_dict=True)
 			if sql and sql[0]:
 					exist_esm.append(frappe._dict({'esm':sql[0]['name'] ,'emp' : sql[0]['employee'] }))
 			else:
@@ -77,14 +104,11 @@ class EmployeeShiftManagementBulk(Document):
 				new_esm.reference_bulk = self.name
 				new_esm.save(ignore_permissions=True)
 				new_esm_list.append(new_esm.name)
-			
-			
+
 		try:
 			for esm in new_esm_list:	
 				to_submit_esm = frappe.get_doc('Employee Shift Management' , esm)
 				to_submit_esm.submit()
-
-		
 			frappe.msgprint(
 					_("Employee Shift Management is Sucessfully Execute"),
 					alert=True,

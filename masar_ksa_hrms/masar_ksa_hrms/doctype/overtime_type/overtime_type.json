@@ -8,6 +8,8 @@
  "field_order": [
   "overtime_type",
   "rate",
+  "is_general",
+  "department",
   "column_break_16aw",
   "salary_component",
   "normal_day",
@@ -59,11 +61,27 @@
    "fieldname": "holidays",
    "fieldtype": "Check",
    "label": "Holidays"
+  },
+  {
+   "depends_on": "eval: doc.is_general == 0",
+   "fieldname": "department",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Department",
+   "mandatory_depends_on": "eval: doc.is_general == 0",
+   "options": "Department"
+  },
+  {
+   "default": "1",
+   "fieldname": "is_general",
+   "fieldtype": "Check",
+   "label": "Is General"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-09-23 14:27:07.024726",
+ "modified": "2024-12-03 15:57:28.912389",
  "modified_by": "Administrator",
  "module": "Masar Ksa Hrms",
  "name": "Overtime Type",

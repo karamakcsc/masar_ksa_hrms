@@ -5,136 +5,90 @@ import frappe
 from frappe import _
 from frappe.model.document import Document
 from datetime import datetime, timedelta
-
+from frappe.query_builder.functions import  Sum
 class ShortLeaveApplication(Document):
 
     def on_submit(self):
         self.calculate_leave_application()
+        
+        
+    def get_standard_working_hours_in_seconds(self):
+            hr_settings_doc = frappe.get_doc('HR Settings')
+            standard_working_hours = float(hr_settings_doc.standard_working_hours)
+            if standard_working_hours not in [0 , None]:
+                hours = int(standard_working_hours)
+                minutes = int((standard_working_hours - hours) * 60)
+                swh_in_seconds = hours * 3600 + minutes * 60
+                return swh_in_seconds
+            return 0
+    def convert_leaves_day_to_second(self , leave_days):
+        seconds_in_day = self.get_standard_working_hours_in_seconds()
+        return leave_days * seconds_in_day
+    
+    def get_leaves_totals(self):
+        sla = frappe.qb.DocType('Short Leave Application')
+        la = frappe.qb.DocType('Leave Application')
+        sql = (frappe.qb.from_(sla)
+            .left_join(la)
+            .on(sla.name == la.custom_sla_reference)
+            .select(
+                (Sum(sla.leave_duration)).as_('sla_amount'),
+                (Sum(la.total_leave_days)).as_('leave_days')
+            )
+            .where(sla.docstatus == 1)
+            .where(sla.status == 'Approved')
+            .where(sla.balance_deduction == 1)
+            .where(sla.leave_type == self.leave_type)
+            .where(sla.employee == self.employee)
+        ).run(as_dict = True)
+        if sql and sql[0]:
+            return {
+                'sla_in_seconds': sql[0]['sla_amount'] if sql[0]['sla_amount'] else 0 ,
+                'leave_in_seconds': self.convert_leaves_day_to_second(sql[0]['leave_days'] if sql[0]['leave_days'] else 0 )  
+            }
+        else:
+            return {
+                'sla_in_seconds': 0 ,
+                'leave_in_seconds': 0     
+            }
+    def create_leave_application(self):
+            new_leave_app_doc = frappe.new_doc('Leave Application')
+            new_leave_app_doc.employee = self.employee
+            new_leave_app_doc.employee_name = self.employee_name
+            new_leave_app_doc.leave_type = self.leave_type
+            new_leave_app_doc.company = self.company
+            new_leave_app_doc.department = self.department
+            new_leave_app_doc.from_date = self.leave_date
+            new_leave_app_doc.to_date = self.leave_date
+            new_leave_app_doc.total_leave_days = 1 
+            new_leave_app_doc.leave_approver = self.leave_approver
+            new_leave_app_doc.posting_date = self.leave_date
+            new_leave_app_doc.status ="Approved"
+            new_leave_app_doc.custom_sla_reference = self.name 
+            new_leave_app_doc.insert(ignore_permissions=True)
+            new_leave_app_doc.submit()
+            frappe.msgprint(
+                "The Leave Application has been Successfully Created and Submitted.",
+                alert=True,
+                indicator='green'
+            )
+            
     def calculate_leave_application(self):
-        total_of_duration_before_this_leave = 0 
-        if self.balance_deduction and self.status == "Approved":
-            if float(self.leave_duration) > 0 :
-                if self.employee:
-                    hr_settings_doc = frappe.get_doc('HR Settings')
-                    standard_working_hours = float(hr_settings_doc.standard_working_hours)
-                    if standard_working_hours not in [0 , None]:
-                        hours = int(standard_working_hours)
-                        minutes = int((standard_working_hours - hours) * 60)
-                        swh_in_seconds = hours * 3600 + minutes * 60
-                        sla = frappe.qb.DocType('Short Leave Application')
-                        application_duration_sql = (
-                            frappe.qb.from_(sla)
-                            .select(
-                                (sla.name),
-                                (sla.application_duration)
-                            )
-                            .where(sla.docstatus == 1 )
-                            .where(sla.status == 'Approved')
-                            .where(sla.balance_deduction == 1 )
-                            .where(sla.to_calaculate == 1 )
-                            .where(sla.leave_type == self.leave_type)
-                            .where(sla.employee == self.employee)
-                        ).run(as_dict = True)
-                        if len(application_duration_sql) !=0:
-                            for app_dur in application_duration_sql:
-                                total_of_duration_before_this_leave += float(app_dur.application_duration)
-                            total_of_duration = total_of_duration_before_this_leave + float(self.leave_duration)
-                            if total_of_duration > swh_in_seconds:
-                                new_leave_app_doc = frappe.new_doc('Leave Application')
-                                new_leave_app_doc.employee = self.employee
-                                new_leave_app_doc.employee_name = self.employee_name
-                                new_leave_app_doc.leave_type = self.leave_type
-                                new_leave_app_doc.company = self.company
-                                new_leave_app_doc.department = self.department
-                                new_leave_app_doc.from_date = self.leave_date
-                                new_leave_app_doc.to_date = self.leave_date
-                                new_leave_app_doc.total_leave_days = 1 
-                                new_leave_app_doc.leave_approver = self.leave_approver
-                                new_leave_app_doc.posting_date = self.leave_date
-                                new_leave_app_doc.status ="Approved"
-                                new_leave_app_doc.custom_sla_reference = self.name 
-                                new_leave_app_doc.insert(ignore_permissions=True)
-                                new_leave_app_doc.submit()
-                                application_duration = total_of_duration -swh_in_seconds
-                                self.application_duration = application_duration
-                                self.to_calaculate =1 
-                                self.calculated = 0 
-                                for docs in application_duration_sql:
-                                    edit_doc = frappe.get_doc('Short Leave Application' , docs.name)
-                                    edit_doc.calculated = 1 
-                                    edit_doc.to_calaculate = 0 
-                                    edit_doc.application_duration = docs.application_duration
-                                    edit_doc.save()
-                                    frappe.db.set_value('Short Leave Application' , docs.name , 'calculated' ,  1 )
-                                    frappe.db.set_value('Short Leave Application' , docs.name , 'to_calaculate' ,  0 )
-                                    frappe.db.set_value('Short Leave Application' , docs.name , 'application_duration' , docs.application_duration )
-                                frappe.db.set_value('Short Leave Application' , self.name , 'application_duration' , self.leave_duration)
-                                frappe.db.set_value('Short Leave Application' , self.name , 'calculated' , 0)
-                                frappe.db.set_value('Short Leave Application' , self.name , 'to_calaculate' ,1)
-                                frappe.msgprint(
-                                        "The Leave Application has been Successfully Created and Submitted.",
-                                        alert=True,
-                                        indicator='green'
-                                    )
-
-                            elif total_of_duration < swh_in_seconds:
-                                self.application_duration = self.leave_duration
-                                self.to_calaculate =1 
-                                self.calculated = 0 
-                                frappe.db.set_value('Short Leave Application' , self.name , 'application_duration' , self.leave_duration)
-                                frappe.db.set_value('Short Leave Application' , self.name , 'calculated' , 0)
-                                frappe.db.set_value('Short Leave Application' , self.name , 'to_calaculate' ,1)
-                            elif total_of_duration == swh_in_seconds:
-                                new_leave_app_doc = frappe.new_doc('Leave Application')
-                                new_leave_app_doc.employee = self.employee
-                                new_leave_app_doc.employee_name = self.employee_name
-                                new_leave_app_doc.leave_type = self.leave_type
-                                new_leave_app_doc.company = self.company
-                                new_leave_app_doc.department = self.department
-                                new_leave_app_doc.from_date = self.leave_date
-                                new_leave_app_doc.to_date = self.leave_date
-                                new_leave_app_doc.total_leave_days = 1 
-                                new_leave_app_doc.leave_approver = self.leave_approver
-                                new_leave_app_doc.posting_date = self.leave_date
-                                new_leave_app_doc.status ="Approved"
-                                new_leave_app_doc.custom_sla_reference = self.name 
-                                new_leave_app_doc.insert(ignore_permissions=True)
-                                new_leave_app_doc.submit()
-                                self.application_duration = self.leave_duration
-                                self.calculated = 1 
-                                self.to_calaculate = 0 
-                                for docs in application_duration_sql:
-                                    edit_doc = frappe.get_doc('Short Leave Application' , docs.name)
-                                    edit_doc.calculated = 1 
-                                    edit_doc.to_calaculate = 0 
-                                    edit_doc.application_duration = docs.application_duration
-                                    edit_doc.save()
-                                    frappe.db.set_value('Short Leave Application' , docs.name , 'calculated' , 1)
-                                    frappe.db.set_value('Short Leave Application' , docs.name , 'to_calaculate' , 0)
-                                    frappe.db.set_value('Short Leave Application' , docs.name , 'application_duration' ,docs.application_duration)
-                                frappe.db.set_value('Short Leave Application' , self.name , 'application_duration' , self.leave_duration)
-                                frappe.db.set_value('Short Leave Application' , self.name , 'calculated' , 1)
-                                frappe.db.set_value('Short Leave Application' , self.name , 'to_calaculate' ,0)
-                                frappe.msgprint(
-                                    "The Leave Application has been Successfully Created and Submitted.",
-                                    alert=True,
-                                    indicator='green'
-                                )
-                        else:
-                            self.application_duration = self.leave_duration
-                            self.to_calaculate =1 
-                            self.calculated = 0 
-                            frappe.db.set_value('Short Leave Application' , self.name , 'to_calaculate' , 1)
-                            frappe.db.set_value('Short Leave Application' , self.name , 'calculated' , 0)
-                            frappe.db.set_value('Short Leave Application' , self.name , 'application_duration' ,self.leave_duration)
-                    else:
-                        frappe.throw("""Standard Working Hours have not been defined in the HR Settings. 
-                                     Please enter the required working hours to proceed.""" , title=_("Standard Working Hours"))
-                else:
-                    frappe.throw("Set Employee" , title=_("Missing Employee"))
-
-            else:
-                frappe.throw("Leave duration cannot be zero. Please enter a valid leave duration." , title=_("Missing Leave Duration"))
+        swh_in_seconds = self.get_standard_working_hours_in_seconds()
+        if not swh_in_seconds:
+            frappe.throw("""Standard Working Hours have not been defined in the HR Settings. <br>
+                            Please enter the required working hours to proceed.""" , title=_("Standard Working Hours")
+            )
+        total_leaves = self.get_leaves_totals()
+        sla_in_seconds = total_leaves['sla_in_seconds']
+        leave_in_seconds = total_leaves['leave_in_seconds']
+        if float(self.leave_duration) <= 0 :
+            frappe.throw(
+                "Leave duration cannot be zero. Please enter a valid leave duration." , 
+                title=_("Missing Leave Duration")
+            )
+        if (sla_in_seconds - leave_in_seconds ) >= swh_in_seconds:
+            self.create_leave_application()
     @frappe.whitelist()
     def get_start_end_shift(self):
         if self.shift_start or self.end_shift:

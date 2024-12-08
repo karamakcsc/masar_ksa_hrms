@@ -1,25 +1,18 @@
 import frappe
 from frappe import _
 import datetime
-from datetime import timedelta , datetime , date
-from datetime import datetime
+from datetime import timedelta , datetime
 from dateutil.relativedelta import relativedelta
 
 def period_validate(self):
-        data = frappe.db.sql('''
-        SELECT 
-            name 
-        FROM 
-            `tab{doc}`
-        WHERE 
-            employee = %s AND 
-            posting_date BETWEEN %s AND %s AND 
-            docstatus = 1 AND
-            name != %s
-        '''
-            .format(doc = self.doctype), 
-            (self.employee, self.from_date, self.to_date , self.name)
-        )
+        d = frappe.qb.DocType(self.doctype)
+        data = (
+            frappe.qb.from_(d)
+            .select(d.name)
+            .where(d.employee == self.employee)
+            .where(d.posting_date.between(self.from_date, self.to_date))
+            .where(d.name != self.name)
+        ).run()
         return data
 
 def date_period(self):
@@ -45,21 +38,21 @@ def date_period(self):
             
 def create_additional_salary(data):
         additional_salary = frappe.new_doc('Additional Salary')
-        additional_salary.employee = data.employee
-        additional_salary.employee_name = data.employee_name
-        additional_salary.department = data.department
-        additional_salary.company = data.company
-        additional_salary.is_recurring = data.is_recurring
-        additional_salary.payroll_date = data.payroll_date
-        additional_salary.salary_component =  data.salary_component
-        additional_salary.type  = data.type
-        additional_salary.amount =  data.amount
+        additional_salary.employee = data['employee']
+        additional_salary.employee_name = data['employee_name']
+        additional_salary.department = data['department']
+        additional_salary.company = data['company']
+        additional_salary.is_recurring = data['is_recurring']
+        additional_salary.payroll_date = data['payroll_date']
+        additional_salary.salary_component =  data['salary_component']
+        additional_salary.type  = data['type']
+        additional_salary.amount =  data['amount']
         additional_salary.deduct_full_tax_on_selected_payroll_date =  (
-            data.deduct_full_tax_on_selected_payroll_date)
+            data['deduct_full_tax_on_selected_payroll_date'])
         additional_salary.overwrite_salary_structure_amount = (
-            data.overwrite_salary_structure_amount)
-        additional_salary.ref_doctype = data.ref_doctype
-        additional_salary.ref_docname = data.ref_docname
+            data['overwrite_salary_structure_amount'])
+        additional_salary.ref_doctype = data['ref_doctype']
+        additional_salary.ref_docname = data['ref_docname']
         additional_salary.insert(ignore_permissions=True)
         additional_salary.submit()
         return additional_salary

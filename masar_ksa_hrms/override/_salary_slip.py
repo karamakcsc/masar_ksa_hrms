@@ -413,12 +413,14 @@ class SalarySlip(TransactionBase):
 	def get_working_days_details(self, lwp=None, for_preview=0):
 			company_doc = frappe.get_doc('Company' , self.company)
 			working_day_30 = company_doc.custom_working_day_30
+			################ Mahmoud OVerride for 30 Working Day 
 			if working_day_30 == 1 :
 				self.get_working_days_details_30wd(lwp=None, for_preview=0)
 			else:
 				self.get_working_days_details_original( lwp=None, for_preview=0)
+			################# Mahmoud End Override to Call Method
 
-
+	################################################# Start 30 Working Day in Month Mahmoud
 	def get_working_days_details_30wd(self, lwp=None, for_preview=0):
 		payroll_settings = frappe.get_cached_value(
 			"Payroll Settings",
@@ -504,6 +506,7 @@ class SalarySlip(TransactionBase):
 				self.payment_days -= unmarked_days
 		else:
 			self.payment_days = 0
+		################################################# End 30 Working Day in Month Mahmoud
 	def get_working_days_details_original(self, lwp=None, for_preview=0):
 		payroll_settings = frappe.get_cached_value(
 			"Payroll Settings",
@@ -1295,32 +1298,36 @@ class SalarySlip(TransactionBase):
 	def eval_condition_and_formula(self, struct_row, data):
 		try:
 			condition, formula, amount = struct_row.condition, struct_row.formula, struct_row.amount
+			
 			if condition and not _safe_eval(condition, self.whitelisted_globals, data):
 				return None
+			
 			if struct_row.amount_based_on_formula and formula:
 				scd = frappe.qb.DocType("Employee Salary Component Detail")
-				sc = frappe.get_doc('Salary Component' , struct_row.salary_component)
+				sc = frappe.get_doc('Salary Component', struct_row.salary_component)
+				
 				if sc.custom_formula_check:
 					amount_sql = (frappe.qb.from_(scd)
-				            .select(
-								(scd.esc_amount)
-								)
-							.where(scd.is_active==1)
-							.where(scd.salary_component == sc.name)
-							.where(scd.parent ==self.employee )
-					).run()
-					if amount_sql and amount_sql[0] and amount_sql[0][0] and (amount_sql[0][0] not in [0 , None]):
+								.select(scd.esc_amount)
+								.where(scd.is_active == 1)
+								.where(scd.salary_component == sc.name)
+								.where(scd.parent == self.employee)
+								).run()
+					
+					if amount_sql and amount_sql[0] and amount_sql[0][0] and (amount_sql[0][0] not in [0, None]):
 						amount = amount_sql[0][0]
 					else:
-						amount = 0 									   
+						amount = 0
 				else:
-				    amount = flt(
-					_safe_eval(formula, self.whitelisted_globals, data), struct_row.precision("amount")
-				)
+					amount = flt(
+						_safe_eval(formula, self.whitelisted_globals, data), 
+						struct_row.precision("amount")
+					)	
 			if amount:
 				data[struct_row.abbr] = amount
 
 			return amount
+
 
 		except NameError as ne:
 			throw_error_message(

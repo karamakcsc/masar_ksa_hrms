@@ -6,8 +6,8 @@ from frappe import _
 import datetime
 from datetime import timedelta, datetime
 from frappe.model.document import Document
-from masar_ksa_hrms.masar_ksa_hrms.doctype.utils import period_validate , date_period , create_additional_salary
-
+from masar_ksa_hrms.masar_ksa_hrms.doctype.utils import date_period , create_additional_salary
+from frappe.utils import get_link_to_form
 class AttendanceProcess(Document):
 	def on_submit(self):
 		self.set_linked_attendance()
@@ -23,42 +23,24 @@ class AttendanceProcess(Document):
 	def holiday_date_in_period(self , shift_name , start_date , end_date ):
 		try:
 			if shift_name and start_date and end_date:
-				holiday_dict = frappe.db.sql("""SELECT holiday_date 
-					FROM tabHoliday th 
-					WHERE parent = %s AND th.holiday_date BETWEEN %s AND %s
-					ORDER BY idx""" , (shift_name , start_date , end_date) , as_dict=True)
+				h = frappe.qb.DocType('Holiday')
+				holiday_dict = (
+					frappe.qb.from_(h)
+					.select(
+						(h.holiday_date), 
+						(h.weekly_off )
+						)
+					.where(h.parent == shift_name)
+					.where(h.holiday_date.between(start_date , end_date))
+					.orderby(h.idx)
+				).run(as_dict = True)
 				return holiday_dict
 			else:
 				return None
 		except Exception as ex:
 			frappe.throw(f'Error While Execute Holiday Date in Period: {str(ex)}')
-
-	def get_salary_component(self):
-		try:
-			if self.overtime_type_nd:
-				sc_nd = frappe.db.sql('SELECT salary_component FROM `tabOvertime Type` WHERE name = %s' , (self.overtime_type_nd), as_dict=True)
-				if sc_nd and sc_nd[0] and sc_nd[0]['salary_component']:
-					self.sc_overtime_nd = sc_nd[0]['salary_component']
-				else:
-					frappe.throw('Set Salary Component in Overtime Type where Type is Normal Day' , title=_('Missing Salary Component'))
-
-			if self.overtime_type_od:
-				sc_od = frappe.db.sql('SELECT salary_component FROM `tabOvertime Type` WHERE name = %s' , (self.overtime_type_od), as_dict=True)
-				if sc_od and sc_od[0] and sc_od[0]['salary_component']:
-					self.sc_overtime_od = sc_od[0]['salary_component']
-				else:
-					frappe.throw('Set Salary Component in Overtime Type where Type is Off Day' , title=_('Missing Salary Component'))
-
-			if self.overtime_type_hd:
-				sc_hd = frappe.db.sql('SELECT salary_component FROM `tabOvertime Type` WHERE name = %s' , (self.overtime_type_hd), as_dict=True)
-				if sc_hd and sc_hd[0] and sc_hd[0]['salary_component']:
-					self.sc_overtime_hd = sc_hd[0]['salary_component']
-				else:
-					frappe.throw('Set Salary Component in Overtime Type where Type is Holiday' , title=_('Missing Salary Component'))
-			return 1 
-		except Exception as ex:
-			frappe.throw(f'Error While Execute Get Salary Component: {str(ex)}')
-
+   
+   
 	@frappe.whitelist()
 	def get_date_period(self):
 		return date_period(self)
@@ -75,7 +57,7 @@ class AttendanceProcess(Document):
 				if self.employee:
 					payroll_settings = frappe.get_doc('Payroll Settings')
 					employee_doc = frappe.get_doc('Employee' , self.employee)
-					company_doc = frappe.get_doc('Company' , self.compsny)
+					company_doc = frappe.get_doc('Company' , self.company)
 					working_day_30= company_doc.custom_working_day_30
 					if working_day_30 == 1 :
 						return 30
@@ -108,17 +90,34 @@ class AttendanceProcess(Document):
 										number_of_days = number_of_days_full_period
 									return number_of_days
 								else:
-									frappe.throw("Missing Shift and Date for Holiday List" , title=_("Missing Hoilday Data"))
+									frappe.throw(
+             								"Missing Shift and Date for Holiday List" , 
+                     						title=_("Missing Hoilday Data")
+                        			)
 							else:
-								frappe.throw(f"Set Holiday List is Shift Type {default_shift_name}" , title=_("Missing Holiday List"))	
+								frappe.throw(
+            								f"Set Holiday List is Shift Type {default_shift_name}" , 
+                							title=_("Missing Holiday List")
+                       				)	
 					else:
-						frappe.throw(f"Set Employee Default Shift for Employee: {self.employee}" , title=_("Missing Employee Default Shift"))
+						frappe.throw(
+          							f"Set Employee Default Shift for Employee: {self.employee}" , 
+                 					title=_("Missing Employee Default Shift")
+                      	)
 				else:
-					frappe.throw("Set Employee" , title=_("Missing Employee"))
+					frappe.throw(
+         					"Set Employee" , 
+              				title=_("Missing Employee")
+                  		)
 			else:
-				frappe.throw("Set Posting Date" , title=_("Missing Posting Date"))
+				frappe.throw(
+        			"Set Posting Date" , 
+           			title=_("Missing Posting Date")
+              	)
 		except Exception as ex:
-			frappe.throw(f'Error While Execute Get Number of Days: {str(ex)}')
+			frappe.throw(
+       			f'Error While Execute Get Number of Days: {str(ex)}'
+          	)
 	
 	@frappe.whitelist()
 	def get_basic_salary_and_basic_salry_with_allowance(self):
@@ -134,15 +133,21 @@ class AttendanceProcess(Document):
 				from_date = datetime.strptime(str(self.from_date), '%Y-%m-%d').date()
 				to_date = datetime.strptime(str(self.to_date), '%Y-%m-%d').date()
 				employee_doc = frappe.get_doc('Employee' , self.employee )
-				company_doc = frappe.get_doc('Company' , self.company)
-				company_sc = company_doc.custom_salary_component
-				if company_sc in [None , '' , ' ']:
-					frappe.throw(f"Set Default Basic Salary in Company {str(self.comany)} in Salary Component." , title=_("Missing Default Basic Salary"))
+				if self.department:
+					department_doc = frappe.get_doc('Department' , self.department)
+					basic_sc = department_doc.custom_salary_component
+					company_doc = frappe.get_doc('Company' , self.company)
+					if basic_sc is None:
+						basic_sc = company_doc.custom_salary_component
+				if basic_sc in [None , '' , ' ']:
+					frappe.throw(f"Set Default Basic Salary in Company {str(self.comany)} in Salary Component.or in Department:{self.department}" , 
+                  	title=_("Missing Default Basic Salary")
+                   	)
 				for esc in employee_doc.custom_employee_salary_component:
-					if esc.salary_component == company_sc:
+					if esc.salary_component == basic_sc:
 						basic_salary = esc.esc_amount
 					if esc.is_active and (from_date <= datetime.strptime(str(esc.date), '%Y-%m-%d').date() <= to_date):
-						if esc.salary_component != company_sc:
+						if esc.salary_component != basic_sc:
 							sal_comp_doc = frappe.get_doc('Salary Component' , esc.salary_component)
 							if sal_comp_doc.custom_is_overtime_applicable:
 								basic_salary_with_allowance += esc.esc_amount
@@ -152,10 +157,63 @@ class AttendanceProcess(Document):
 						'basic_salary_with_allowance' : basic_salary_with_allowance
 					})
 			else:
-				frappe.throw(f"Set Employee and Posting Date" , title=_("Missing Standard Fields"))
+				frappe.throw(
+        			f"Set Employee and Posting Date" , 
+           			title=_("Missing Standard Fields")
+              	)
 		except Exception as ex:
-			frappe.throw(f'Error While Execute Get Basic Salary and Basic Salary With Allowance:{str(ex)}')
-
+			frappe.throw(
+       			f'Error While Execute Get Basic Salary and Basic Salary With Allowance:{str(ex)}'
+          	)
+	def get_salary_component(self):
+		ot = frappe.qb.DocType('Overtime Type')
+		sc = (
+			frappe.qb.from_(ot)
+			.select(ot.name)
+		)
+		if self.department:
+			department_sc = sc.where(ot.department == self.department).run(as_dict = True)
+		if len(department_sc) != 3:
+			company_sc = sc.where(ot.is_general == 1).run(as_dict = True)
+			if len(company_sc) !=3:
+				frappe.throw(
+					f"""Check Overtime Type must have three types (Normal Day , Off Day , Holidays) 
+					For Department: {self.department} or three types as General."""
+				)
+			else:
+				sc = sc.where(ot.is_general == 1)
+		else:
+			sc = sc.where(ot.department == self.department)
+		
+		sc_nd = sc.where(ot.normal_day == 1).run(as_dict = True)				
+		if sc_nd and sc_nd[0] and sc_nd[0]['name']:
+			self.overtime_type_nd = sc_nd[0]['name']
+		else: 
+			frappe.throw(
+					'Set Overtime Type where Type is Normal Day for Department {dep}'
+     				.format(dep = self.department), 
+					title=_('Missing Normal Day Overtime Type')
+			)
+		sc_od = sc.where(ot.off_day == 1).run(as_dict = True)
+		if sc_od and sc_od[0] and sc_od[0]['name']:
+			self.overtime_type_od = sc_od[0]['name']
+		else: 
+			frappe.throw(
+					'Set Overtime Type where Type is Off Day for Department {dep}'
+					.format(dep = self.department),
+					title=_('Missing Off Day Overtime Type')
+			)
+		
+		sc_hd = sc.where(ot.holidays == 1).run(as_dict = True)
+		if sc_hd and sc_hd[0] and sc_hd[0]['name']:
+			self.overtime_type_hd = sc_hd[0]['name']
+		else: 
+			frappe.throw(
+					'Set Overtime Type where Type is Holidays for Department {dep}'
+     				.format(dep = self.department),
+					title=_('Missing Holidays Overtime Type')
+			)
+		return 1 
 	@frappe.whitelist()
 	def get_hours_rate_and_salaries(self):
 		try:
@@ -184,23 +242,44 @@ class AttendanceProcess(Document):
 					self.basic_salary_with_allowances = basic_salary_with_allowance
 					self.bs_hour_rate = bs_hour_rate
 					self.bswa_hour_rate = bswa_hour_rate
-					dict_ =  frappe._dict({
+					dict_ =  frappe._dict(
+         				{
 						'working_day' : number_of_payment_days,
 						'basic_salary' : basic_salary, 
 						'basic_salary_with_allowance': basic_salary_with_allowance,
 						'basic_salary_hour_rate' : bs_hour_rate,
 						'basic_salary_with_allowance_hour_rate': bswa_hour_rate
-					})
+						}
+             		)
 					return dict_
 				else:
-					frappe.throw(f"Self Employee Default Shift for Employee: {self.employee}" , title=_("Missing Employee Default Shift"))
+					frappe.throw(
+         				f"Self Employee Default Shift for Employee: {self.employee}" , 
+             			title=_("Missing Employee Default Shift")
+                	)
 			else:
-				frappe.throw("Set Employee" , title=_("Missing Employee"))
+				frappe.throw(
+        			"Set Employee" , 
+           			title=_("Missing Employee")
+              	)
 		except Exception as ex:
-			frappe.throw(f'Error While Execute Get Hours rate and Salaies: {str(ex)}')
+			frappe.throw(
+       			f'Error While Execute Get Hours rate and Salaies: {str(ex)}'
+          	)
 
 	def calculate_employee_overtime(self):
 		try:
+			def get_weekly_off(
+					holiday_lst, 
+					date , 
+					h = frappe.qb.DocType('Holiday')
+			):
+					return (
+					frappe.qb.from_(h)
+					.select(h.weekly_off)
+					.where(h.parent == holiday_lst)
+					.where(h.holiday_date == date)
+				).run(as_dict = True)
 			self.overtime_details=[]
 			over_time_nd_in_seconds = 0
 			over_time_fd_in_seconds = 0 
@@ -215,29 +294,46 @@ class AttendanceProcess(Document):
 					emp_doc = frappe.get_doc("Employee" , self.employee)
 					is_overtime_applicable = emp_doc.is_overtime_applicable
 					if is_overtime_applicable == 0 :
-						frappe.msgprint(_("Employee {0} is not eligible for overtime").format(self.employee), title=_("Overtime Not Applicable"))
+						frappe.msgprint(
+          					_("Employee: {0} is not Eligible for Overtime").format(get_link_to_form('Employee' , self.employee)), 
+               				title=_("Overtime Not Applicable")
+               				)
 						return False 
-					attendance_sql = frappe.db.sql("""
-						SELECT 
-							ta.name ,
-							ta.employee , 
-							ta.employee_name , 
-							ta.department , 
-							ta.attendance_date , 
-							ta.in_time , 
-							ta.out_time , 
-							tst.start_time ,
-							tst.end_time ,
-							tst.custom_enable_early_entry_marking , 
-							tst.custom_early_entry_grace_period , 
-							tst.custom_enable_late_exit_marking , 
-							tst.custom_late_exit_grace_period , 
-							tst.holiday_list 
-						FROM tabAttendance ta 
-						INNER JOIN `tabShift Type` tst ON ta.shift = tst.name
-						LEFT JOIN tabEmpolyee te ON te.name = ta.employee AND te.is_overtime_applicable =1 
-						WHERE ta.status = 'Present' AND ta.employee = %s AND ta.attendance_date BETWEEN %s AND %s
-					""", (self.employee , self.from_date , self.to_date ) , as_dict= True)
+					e = frappe.qb.DocType('Employee')
+					a = frappe.qb.DocType('Attendance')
+					st = frappe.qb.DocType('Shift Type')
+					attendance_sql = ((
+						frappe.qb.from_(a)
+						.select(
+							(a.name) , 
+							(a.employee) , 
+							(a.employee_name) , 
+							(a.department), 
+							(a.attendance_date), 
+							(a.in_time) ,
+							(a.out_time) ,
+							(st.start_time) ,
+							(st.end_time) ,
+							(st.custom_enable_early_entry_marking) ,
+							(st.custom_early_entry_grace_period) , 
+							(st.custom_enable_late_exit_marking) ,
+							(st.custom_late_exit_grace_period) ,
+							(st.holiday_list)
+						)
+						.join(st)
+						.on(st.name == a.shift)
+						.join(e)
+						.on(e.name == a.employee)
+						.where(e.is_overtime_applicable  == 1)
+						.where(a.status == 'Present')
+						.where(a.employee == self.employee)
+						.where(a.attendance_date.between(
+							self.from_date , self.to_date 
+						)
+						)
+					)
+					.run(as_dict = True))
+					print(attendance_sql)
 					if len(attendance_sql) != 0 :
 						for att in attendance_sql:
 							employee = att.employee
@@ -269,18 +365,18 @@ class AttendanceProcess(Document):
 							else: 
 								overtime_end_seconds = end_seconds
 							holiday_list = list()
-							holiday_date_sql = frappe.db.sql("""SELECT holiday_date , weekly_off  
-											FROM `tabHoliday` th 
-											WHERE th.parent = %s AND th.holiday_date BETWEEN %s AND %s
-							""" , (holiday_list_att , self.from_date , self.to_date) , as_dict=True)
+							holiday_date_sql = self.holiday_date_in_period( 
+									shift_name = holiday_list_att , 
+									start_date = self.from_date , 
+									end_date = self.to_date 
+							)
 							att_date = datetime.strptime(str(attendance_date), '%Y-%m-%d').date()
 							for holiday_date in holiday_date_sql:
 								holiday_list.append(holiday_date.holiday_date)
 							employee_overtime_before_shift_seconds = 0 
 							employee_overtime_after_shift_seconds = 0 
 							if att_date in holiday_list:
-									weekly_off_sql = frappe.db.sql("""SELECT weekly_off  FROM `tabHoliday` th WHERE th.parent = %s AND th.holiday_date = %s 
-											""" , (holiday_list_att , att_date ) , as_dict= True) 
+									weekly_off_sql = get_weekly_off(holiday_lst=holiday_list_att , date=att_date)
 									if weekly_off_sql and weekly_off_sql[0] and weekly_off_sql[0]['weekly_off']:
 										weekly_off = int(weekly_off_sql[0]['weekly_off'])
 									if weekly_off == 1 :
@@ -337,16 +433,27 @@ class AttendanceProcess(Document):
 						})
 						return overtime
 				else: 
-					frappe.throw(f"Set Employee and Posting Date" , title=_("Missing Standard Fields"))
+					frappe.throw(
+         				f"Set Employee and Posting Date" , 
+             			title=_("Missing Standard Fields")
+                	)
 			else:
-				frappe.throw(f"Set Employee and Posting Date" , title=_("Missing Standard Fields"))
+				frappe.throw(
+        			f"Set Employee and Posting Date" , 
+           			title=_("Missing Standard Fields")
+              	)
 		except Exception as ex:
-			frappe.throw(f'Error While Execute Calculate Employee Overtime: {str(ex)}')
+			frappe.throw(
+       				f'Error While Execute Calculate Employee Overtime: {str(ex)}'
+           )
 
 
 
 	def calculate_overtime_rate(self):
 		try:
+			if self.doctype == 'Attendance Process':
+				self.get_salary_component()
+			amount_nd , amount_od , amount_hd  = 0 , 0 , 0 
 			data_salary = self.get_hours_rate_and_salaries()
 			working_day = data_salary.working_day
 			basic_salary =  data_salary.basic_salary 
@@ -358,43 +465,24 @@ class AttendanceProcess(Document):
 				normal_day_in_seconds = overtime_data.ot_normal_day
 				off_day_in_seconds = overtime_data.ot_off_day
 				holiday_in_seconds = overtime_data.ot_holiday
-				types = frappe.db.sql("""SELECT name ,  rate , normal_day , off_day , holidays , salary_component  FROM `tabOvertime Type` tot """ , as_dict=True)
-				if len(types) !=3: 
-					frappe.throw("Check Overtime Type must have three types (Normal Day , Off Day , Holidays).", title=_("Missing Overtime Types"))
-				for type in types : 
-					normal_day = type.normal_day
-					off_day = type.off_day
-					holidays = type.holidays
-					overtime_type = type.name
-					# salary_component = type.salary_component
-					rate = type.rate
-					if normal_day:
-						self.overtime_type_nd = overtime_type
-						self.overtime_rate_nd = rate
+				if self.overtime_type_nd:
 						self.overtime_nd = normal_day_in_seconds
 						amount_basic_with_allowance_nd = float(basic_salary_with_allowance_hour_rate) * (normal_day_in_seconds/3600)
-						amount_basic_nd = float(basic_salary_hour_rate) * (float(normal_day_in_seconds)/3600) * (float(rate) - 1 )
+						amount_basic_nd = float(basic_salary_hour_rate) * (float(normal_day_in_seconds)/3600) * (float(self.overtime_rate_nd if self.overtime_rate_nd else 0 ) - 1 )
 						amount_nd = amount_basic_with_allowance_nd + amount_basic_nd
-						self.amount_nd = amount_nd
-					elif off_day:
-						self.overtime_type_od = overtime_type
-						self.overtime_rate_od = rate
+				if self.overtime_type_od:
 						self.overtime_od = off_day_in_seconds
-						amount_basic_od = float(basic_salary_hour_rate) * (float(off_day_in_seconds)/3600) * (float(rate) - 1 )
+						amount_basic_od = float(basic_salary_hour_rate) * (float(off_day_in_seconds)/3600) * (float(self.overtime_rate_od if self.overtime_rate_od else 0 ) - 1 )
 						amount_basic_with_allowance_od =  float(basic_salary_with_allowance_hour_rate) * (off_day_in_seconds/3600)
 						amount_od = amount_basic_with_allowance_od + amount_basic_od
-						self.amount_od = amount_od
-					elif holidays:
-						self.overtime_type_hd = overtime_type
-						self.overtime_rate_hd = rate
+				if self.overtime_type_hd:
 						self.overtime_hd = holiday_in_seconds
-						amount_basic_hd = float(basic_salary_hour_rate) * (float(holiday_in_seconds)/3600) * (float(rate) - 1 )
+						amount_basic_hd = float(basic_salary_hour_rate) * (float(holiday_in_seconds)/3600) * (float(self.overtime_rate_hd if self.overtime_rate_hd else 0 ) - 1 )
 						amount_basic_with_allowance_hd =  float(basic_salary_with_allowance_hour_rate) * (holiday_in_seconds/3600)
 						amount_hd = amount_basic_with_allowance_hd + amount_basic_hd
-						self.amount_hd = amount_hd
-				if self.set_salary_component == 0 :
-					self.get_salary_component()
-					self.set_salary_component =1 
+				self.amount_hd = amount_hd
+				self.amount_nd = amount_nd
+				self.amount_od = amount_od
 				self.working_day = int(working_day)
 				self.basic_salary = basic_salary
 				self.basic_salary_with_allowances = basic_salary_with_allowance
@@ -406,6 +494,7 @@ class AttendanceProcess(Document):
 				self.ot_total_amount = float(amount_nd + amount_hd + amount_od)
 		except Exception as ex:
 			frappe.throw(f'Error While Execute Calculate Overtime Rate: {str(ex)}')
+   
 	@frappe.whitelist()
 	def set_linked_attendance(self):
 		try:
@@ -418,7 +507,9 @@ class AttendanceProcess(Document):
 						att_doc.save()
 			return 1 
 		except Exception as ex:
-			frappe.throw(f'Error While Execute Set Linked Attendance: {str(ex)}')
+			frappe.throw(
+       				f'Error While Execute Set Linked Attendance: {str(ex)}'
+           	)
 				
 	def additional_salary_for_overtime(self):
 		try:
@@ -452,7 +543,7 @@ class AttendanceProcess(Document):
 							'amount' :  total,
 							'deduct_full_tax_on_selected_payroll_date' :  1,
 							'overwrite_salary_structure_amount' :  1,
-							'ref_doctype' : 'Attendance Process',
+							'ref_doctype' : self.doctype,
 							'ref_docname' : self.name
 						})
 						additional_salary = create_additional_salary(data)
@@ -491,7 +582,11 @@ class AttendanceProcess(Document):
 	def trash_linked_document(self):
 		#### Cannot Delete Additional Salary For Over Time 
 			msg = ''
-			add_sal_sql = frappe.db.sql("SELECT name FROM `tabAdditional Salary` WHERE ref_docname = %s" , (self.name) , as_dict=True)
+			add_sal_sql = frappe.db.sql(
+       				"SELECT name FROM `tabAdditional Salary` WHERE ref_docname = %s" , 
+           			(self.name) , 
+              		as_dict=True
+                )
 			if len(add_sal_sql) !=0 :
 				msg+= 'Cannot Delete Document Before Delete Linked Additional Salary: <br><ul>'
 				for add_sal in add_sal_sql:
@@ -505,6 +600,7 @@ class AttendanceProcess(Document):
 			basic_salary = 0 
 			leaves_salary = 0 
 			leaves_salary_comp = 0 
+			sc_basic = list()
 			if self.employee and self.posting_date:
 				if self.posting_date and (self.from_date is None or self.to_date is None):
 					date = self.get_date_period()
@@ -515,26 +611,32 @@ class AttendanceProcess(Document):
 				to_date = datetime.strptime(str(self.to_date), '%Y-%m-%d').date()
 				employee_doc = frappe.get_doc('Employee' , self.employee )
 				company_doc = frappe.get_doc('Company' , self.company)
-				company_sc = company_doc.custom_salary_component
-				if company_sc in [None , '' , ' ']:
-					frappe.throw(f"Set Default Basic Salary in Company {str(self.comany)} in Salary Component." ,
-                  					title=_("Missing Default Basic Salary")
+				department_doc = frappe.get_doc('Department' , self.department)
+				if company_doc.custom_salary_component:
+					sc_basic.append(company_doc.custom_salary_component)
+				if department_doc.custom_salary_component:
+					sc_basic.append(department_doc.custom_salary_component)
+				if len(sc_basic) == 0:
+					frappe.throw(
+         					f"Set Default Basic Salary in Company {str(self.comany)} in Salary Component or in Department :{str(self.department)}" ,
+                  			title=_("Missing Default Basic Salary")
                     )
-				
+				basic_in_table = None
 				for esc in employee_doc.custom_employee_salary_component:
-					if esc.salary_component == company_sc:
+					if esc.salary_component in sc_basic:
+						basic_in_table = esc.salary_component
 						basic_salary = esc.esc_amount
 					if esc.is_active and (from_date <= datetime.strptime(str(esc.date), '%Y-%m-%d').date() <= to_date):
-						if esc.salary_component != company_sc:
+						if esc.salary_component != basic_in_table:
 							sal_comp_doc = frappe.get_doc('Salary Component' ,esc.salary_component )
 							if sal_comp_doc.custom_is_short_leave_applicable:
 								leaves_salary_comp += esc.esc_amount
-				
 				leaves_salary = leaves_salary_comp + basic_salary
 				return leaves_salary
 			else:
-				frappe.throw(f"Set Employee and Posting Date" , 
-                 				title=_("Missing Standard Fields")
+				frappe.throw(
+						f"Set Employee and Posting Date" , 
+						title=_("Missing Standard Fields")
                 )
 		except Exception as ex:
 			frappe.throw(f'Error While Execute Calculate Leaves Salary :{str(ex)}')
@@ -587,25 +689,31 @@ class AttendanceProcess(Document):
 				if date : 
 					from_date = date.from_date
 					to_date = date.to_date
-			short_leave_application_sql = frappe.db.sql("""
-									SELECT 
-												tsla.name ,
-												tsla.salary_component ,
-												tsla.leave_type ,
-												tsla.leave_date ,
-												tsla.from_time ,
-												tsla.leave_duration ,
-												tsla.to_time ,
-												tlt.custom_salary_deduction_rate
-									FROM 
-												`tabShort Leave Application` tsla
-									INNER JOIN 
-												`tabLeave Type` tlt ON tsla.leave_type = tlt.name
-									WHERE 
-												tsla.docstatus = 1 
-												AND tsla.status = 'Approved'
-												AND tsla.salary_deduction = 1  
-												AND tsla.leave_date BETWEEN %s AND %s""", (from_date , to_date) , as_dict = True)
+			sla = frappe.qb.DocType('Short Leave Application')
+			lt = frappe.qb.DocType('Leave Type')
+			short_leave_application = (
+					frappe.qb.from_(sla)
+					.select(
+						(sla.name),
+						(sla.salary_component),
+						(sla.leave_type),
+						(sla.leave_date),
+						(sla.from_time),
+						(sla.leave_duration),
+						(sla.to_time),
+						(lt.custom_salary_deduction_rate)
+					)
+					.join(lt)
+					.on(lt.name == sla.leave_type)
+					.where(sla.docstatus == 1 )
+					.where(sla.status == 'Approved')
+					.where(sla.leave_date.between(
+						from_date , to_date
+					))
+				)
+			if self.doctype  == 'Employee Overtime and Leave':
+				short_leave_application = short_leave_application.where(sla.salary_deduction == 1)
+			short_leave_application_sql = short_leave_application.run(as_dict = True )
 			total_amount = 0 
 			self.leaves_table = []
 			if len(short_leave_application_sql) != 0 :
@@ -653,7 +761,7 @@ class AttendanceProcess(Document):
 					'amount' :  add_sal.amount,
 					'deduct_full_tax_on_selected_payroll_date' :  1,
 					'overwrite_salary_structure_amount' :  1,
-					'ref_doctype' : 'Attendance Process',
+					'ref_doctype' : self.doctype,
 					'ref_docname' : self.name
 					})
 					create_additional_salary(data)

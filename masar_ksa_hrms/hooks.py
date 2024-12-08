@@ -265,6 +265,9 @@ fixtures = [
                 "Employee-custom_nationality",
                 "Employee-custom_citizen_number",
                 "Employee-custom_nationality_number" ,
+                "Employee-custom_salary_components",
+                "Employee-custom_employee_salary_component",
+                "Employee-custom_escm_ref",
                 "Employee-custom_overtime_details",
                 "Employee-custom_is_overtime_applicable",
                 "Employee-custom_end_of_service_details",
@@ -292,8 +295,6 @@ fixtures = [
                 "Employee-custom_basic_salary_with_allowance",
                 "Employee-custom_eos_salary",
                 "Employee-custom_salary_component", 
-                "Employee-custom_employee_salary_component",
-                "Employee-custom_escm_ref",
                 # Shift Assignment
                 "Shift Assignment-custom_employee_shift_management",
                 # Company
@@ -337,7 +338,22 @@ fixtures = [
                 "Leave Type-custom_balance_deduction",
                 "Leave Type-custom_salary_deduction_rate", 
                 ### Leave Application
-                "Leave Application-custom_sla_reference"
+                "Leave Application-custom_sla_reference", 
+                ### Department
+                "Department-custom_section_break_xtbkb",
+                "Department-custom_salary_component",
+                "Department-custom_social_security_accounts", 
+                "Department-custom_ss_default_account",
+                "Department-custom_ss_expenses",
+                "Department-custom_column_break_8byso", 
+                "Department-custom_ss_liabilities",
+                "Department-custom_ss_cost_center", 
+                "Department-custom_end_of_service_accounts" , 
+                "Department-custom_eos_default_account",
+                "Department-custom_eos_expenses", 
+                "Department-custom_column_break_v21bg", 
+                "Department-custom_eos_liabilities", 
+                "Department-custom_eos_cost_center"
                 ]
         ]
     ]},

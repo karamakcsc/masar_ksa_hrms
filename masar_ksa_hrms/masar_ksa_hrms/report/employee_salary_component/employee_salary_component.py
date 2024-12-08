@@ -8,34 +8,34 @@ def execute(filters=None):
 	return columns(), data(filters), None
 
 def data(filters):
-    conditions = "1=1"
-    
-    _from, to = filters.get('from'), filters.get('to')
-    
-    if filters.get('employee'):
-        conditions += f" AND te.employee = '{filters.get('employee')}'"
-        
-    if filters.get('salary_component'):
-        conditions += f" AND tschd.salary_component = '{filters.get('salary_component')}'"
-        
-    if filters.get('is_active'):
-        conditions += f" AND tschd.is_active = '{filters.get('is_active')}'"
-        
-    if _from and to:
-        conditions += f" AND tschd.from_date BETWEEN '{_from}' AND '{to}'"
-        
-    data = frappe.db.sql(f"""
-                        	SELECT 
-								te.employee, te.employee_name, te.department, te.company, te.status, tschd.salary_component,
-								tschd.amount, tschd.from_date, tschd.is_active, tschd.escm_ref
-							FROM tabEmployee te
-							INNER JOIN `tabEmployee Salary Component History` tesch ON tesch.employee = te.employee
-							INNER JOIN `tabSalary Component History Details` tschd ON tschd.parent = tesch.name
-							WHERE {conditions}
-						""")
-    
-    return data
-
+    e = frappe.qb.DocType('Employee')
+    esch = frappe.qb.DocType('Employee Salary Component History')
+    schd = frappe.qb.DocType('Salary Component History Details')
+    query = (
+        frappe.qb.from_(e)
+        .join(esch)
+        .on(esch.employee == e.name)
+        .join(schd)
+        .on(schd.parent == esch.name)
+        .select(
+            (e.name),
+            (e.employee_name),
+            (e.department),
+            (e.company),
+            (e.status),
+            (schd.salary_component),
+            (schd.amount),
+            (schd.from_date),
+            (schd.is_active),
+            (schd.escm_ref)
+		) 
+	)
+    if filters.get('from') and  filters.get('to'):
+        query = query.where(schd.from_date.between(filters.get("from_date"), filters.get("to_date")))
+    query=query.where(e.employee == filters.get('employee')) if filters.get('employee') else query=query
+    query=query.where(schd.salary_component == filters.get('salary_component')) if filters.get('salary_component') else query=query
+    query=query.where(schd.is_active == filters.get('is_active')) if filters.get('is_active') else query=query
+    return query.run()
 def columns():
     return [
 		"Employee: Link/Employee:150",

@@ -4,7 +4,7 @@ from frappe import _
 def before_cancel(self , method):
     for account in self.accounts:
         if (
-            account.reference_type == 'Payroll Entry' 
+            account.reference_type == 'Payroll Entry'  and account.user_remark is not None 
             and 'End of Service' in account.user_remark
             ):
                 pro = 'EOS Provision Details'

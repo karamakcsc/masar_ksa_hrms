@@ -13,9 +13,10 @@ frappe.ui.form.on("Employee Salary Component Management", {
     },
     employee: function(frm) {
         GetSSNumber(frm)
+        GetBasicSalaryComponent(frm);
     },
     company: function(frm) {
-        GetBasicSalaryComponent(frm);
+        GetBasicSalaryComponent(frm)
     },
     by_percent : function(frm) { 
         GetHousingPercentage(frm)
@@ -31,6 +32,12 @@ frappe.ui.form.on("Employee Salary Component Management", {
     }, 
     ss_salary:function(frm){
         SSAmount(frm);
+    }, 
+    basic_salary_component :function(frm){
+        GetBasicSalaryComponent(frm);
+    }, 
+    ss_component:function(frm){
+        Filters(frm);s
     }
 
 });
@@ -75,23 +82,29 @@ function Filters(frm) {
             }
         };
     });
-    frappe.db.get_value('Company', frm.doc.company, 'custom_salary_component').then((r) => {
-        frm.fields_dict["esc_table"].grid.get_field("salary_component").get_query = function () {
-            let salComp = [];
+    frappe.call({
+        doc: frm.doc,
+        method: 'get_basic_salary_component',
+        callback: function(r) {
+            let NotInChild = r.message; 
+            frm.fields_dict["esc_table"].grid.get_field("salary_component").get_query = function () {
+                let salComp = [];
+                if (frm.doc.esc_table && frm.doc.esc_table.length) {
+                    salComp = frm.doc.esc_table.map(row => row.salary_component);
+                }
     
-            if (frm.doc.esc_table && frm.doc.esc_table.length) {
-                salComp = frm.doc.esc_table.map(row => row.salary_component);
-            }
-    
-            return {
-                filters: [
-                    ["name", "not in", [r.message.custom_salary_component , frm.doc.ss_component]], 
-                    ["custom_is_housing_allowance", "=", 0],
-                    ["name", "not in", salComp] 
-                ]
+                return {
+                    filters: [
+                        ["name", "not in", NotInChild],  
+                        ["custom_is_housing_allowance", "=", 0],
+                        ["name", "not in", salComp]
+                    ]
+                };
             };
-        };
+        }
     });
+    
+
     
 
 }
@@ -101,14 +114,12 @@ function GetBasicSalaryComponent(frm){
         method: 'get_basic_salary_component',
         callback: function(r) {
             let basicSalary = r.message;
-            frm.set_value('basic_salary_component', basicSalary);
-            frm.refresh_field('basic_salary_component');
             frm.set_query('basic_salary_component', function() {
                 return {
-                    filters: {
-                        "type": "Earning",
-                        "name": basicSalary
-                    }
+                    filters: [
+                        ["type" , "=" ,"Earning"],
+                        ["name", "in", basicSalary] 
+                ]
                 };
             });
             Filters(frm);

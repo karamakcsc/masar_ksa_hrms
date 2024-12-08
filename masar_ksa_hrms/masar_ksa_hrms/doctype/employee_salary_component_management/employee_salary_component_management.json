@@ -11,6 +11,7 @@
   "employee_name",
   "nationality",
   "marital_status",
+  "department",
   "column_break_cijb",
   "company",
   "from_date",
@@ -201,6 +202,7 @@
    "fetch_from": "employee.custom_nationality",
    "fieldname": "nationality",
    "fieldtype": "Link",
+   "in_standard_filter": 1,
    "label": "Nationality",
    "options": "Country",
    "read_only": 1
@@ -269,7 +271,7 @@
   {
    "depends_on": "is_ss_applicable",
    "fieldname": "ss_number",
-   "fieldtype": "Int",
+   "fieldtype": "Data",
    "label": "Social Security Number",
    "mandatory_depends_on": "is_ss_applicable",
    "read_only_depends_on": "eval:doc.edit_info == 0 "
@@ -405,6 +407,15 @@
    "fieldtype": "Tab Break",
    "label": "Connections",
    "show_dashboard": 1
+  },
+  {
+   "fetch_from": "employee.department",
+   "fieldname": "department",
+   "fieldtype": "Link",
+   "in_standard_filter": 1,
+   "label": "Department",
+   "options": "Department",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
@@ -422,7 +433,7 @@
    "link_fieldname": "custom_escm_ref"
   }
  ],
- "modified": "2024-10-01 12:52:13.744592",
+ "modified": "2024-11-26 15:28:51.757084",
  "modified_by": "Administrator",
  "module": "Masar Ksa Hrms",
  "name": "Employee Salary Component Management",

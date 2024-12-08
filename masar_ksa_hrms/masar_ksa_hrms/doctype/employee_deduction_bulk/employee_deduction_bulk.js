@@ -22,6 +22,18 @@ frappe.ui.form.on("Employee Deduction Bulk", {
     },
     onload: function(frm) { 
         FilterFields(frm);
+    }, 
+    by_amount: function(frm){
+        if (frm.doc.by_amount === 0){
+            frm.doc.percentage =0; 
+            frm.refresh_field("percentage");
+        }
+    },
+    by_percent: function(frm){
+        if (frm.doc.by_percent === 0){
+            frm.doc.amount =0; 
+            frm.refresh_field("amount");
+        }
     }
 });
 

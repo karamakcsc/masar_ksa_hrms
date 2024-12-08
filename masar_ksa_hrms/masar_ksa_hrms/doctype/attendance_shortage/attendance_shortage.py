@@ -1,6 +1,5 @@
 # Copyright (c) 2024, KCSC and contributors
 # For license information, please see license.txt
-
 import frappe
 from frappe import _
 import datetime
@@ -32,6 +31,7 @@ class AttendanceShortage(Document):
     @frappe.whitelist()
     def get_date_period(self):
        return date_period(self)
+   
     @frappe.whitelist()     
     def get_shortage_attendance(self):
         if not self.employee:
@@ -307,32 +307,42 @@ def get_date_period_list(posting_date):
 				} 
         except Exception as ex:
             frappe.throw(f'Error While Execute Get Date Period: {str(ex)}')
+            
 @frappe.whitelist()
-def get_employees(date_from, date_to, posting_date, department=None, nationality=None, default_shift=None):
+def get_employees(
+        date_from, 
+        date_to, 
+        posting_date, 
+        department=None, 
+        nationality=None, 
+        default_shift=None
+    ):
     try:
         from masar_ksa_hrms.masar_ksa_hrms.doctype.attendance_shortage.attendance_shortage import AttendanceShortage as ATT
         get_shortage_attendance = ATT.get_shortage_attendance
-        conditions = ''
+        date_from = datetime.strptime(str(date_from) , "%Y-%m-%d")
+        formatted_date = date_from.strftime("%Y-%m-%d")
         if department:
             conditions += f" AND te.department ='{department}'"
         if nationality: 
             conditions += f" AND te.custom_nationality ='{nationality}'"
         if default_shift: 
             conditions += f" AND te.default_shift ='{default_shift}'"
+        conditions = "WHERE %s BETWEEN tsa.start_date AND tsa.end_date"
         data = """
-            SELECT te.name, te.employee_name, te.department,te.default_shift ,  tsa.name AS shift_assignment
+            SELECT te.name, te.employee_name, te.department, te.default_shift, tsa.name AS shift_assignment
             FROM `tabEmployee` te
             LEFT JOIN `tabShift Assignment` tsa 
                 ON tsa.employee = te.name 
                 AND tsa.docstatus = 1 
                 AND tsa.status = 'Active'
-            WHERE %s BETWEEN tsa.start_date and tsa.end_date {cond}
+            {}
             ORDER BY te.name 
-        """.format(cond =conditions )
+        """.format(conditions)
         without_sh_ass = list()
         without_default_shift = list()
         exist_employee = list()
-        employees = frappe.db.sql(data, (date_from), as_dict=True)
+        employees = frappe.db.sql(data, (formatted_date), as_dict=True)
         for emp in employees:
             if emp.shift_assignment:
                 if emp.default_shift:
@@ -348,7 +358,6 @@ def get_employees(date_from, date_to, posting_date, department=None, nationality
                     
                     if  len(data_exist) == 0 :
                         doc_dict =  {
-                            'doctype': 'Attendance Shortage',
                             'employee': emp.name,
                             'employee_name': emp.employee_name,
                             'department': emp.department,
@@ -356,8 +365,7 @@ def get_employees(date_from, date_to, posting_date, department=None, nationality
                             'posting_date': str(posting_date),
                             'is_bulk': 1
                             }
-                        emp_doc = frappe.get_doc(doc_dict)
-                        emp_doc.insert()
+                        emp_doc = frappe.new_doc('Attendance Shortage').update(doc_dict).save()
                         get_shortage_attendance(emp_doc)
                         emp_doc.save()
                     else:

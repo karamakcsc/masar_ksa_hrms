@@ -14,9 +14,8 @@
   "section_break_sebb",
   "by_amount",
   "by_percent",
-  "is_overtime_applicaple",
   "column_break_kyhe",
-  "total",
+  "amount",
   "percentage",
   "section_break_ombt",
   "amended_from",
@@ -83,12 +82,14 @@
   },
   {
    "default": "0",
+   "depends_on": "eval: doc.by_percent ==0",
    "fieldname": "by_amount",
    "fieldtype": "Check",
    "label": "By Amount"
   },
   {
    "default": "0",
+   "depends_on": "eval: doc.by_amount ==0",
    "fieldname": "by_percent",
    "fieldtype": "Check",
    "label": "By Percent"
@@ -99,28 +100,12 @@
   },
   {
    "default": "0",
-   "depends_on": "eval:doc.by_amount == 1\r\n",
-   "fieldname": "total",
-   "fieldtype": "Int",
-   "in_list_view": 1,
-   "label": "Total",
-   "mandatory_depends_on": "eval:doc.by_amount == 1\r\n"
-  },
-  {
-   "default": "0",
    "depends_on": "by_percent",
-   "fieldname": "is_overtime_applicaple",
-   "fieldtype": "Check",
-   "label": "Is Overtime Applicaple"
-  },
-  {
-   "default": "0",
-   "depends_on": "eval:doc.by_percent == 1\r\n",
    "fieldname": "percentage",
    "fieldtype": "Percent",
    "in_list_view": 1,
    "label": "Percentage",
-   "mandatory_depends_on": "eval:doc.by_percent == 1\r\n"
+   "mandatory_depends_on": "by_percent"
   },
   {
    "fieldname": "section_break_ombt",
@@ -210,6 +195,13 @@
   {
    "fieldname": "column_break_bzsa",
    "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "by_amount",
+   "fieldname": "amount",
+   "fieldtype": "Float",
+   "label": "Amount",
+   "mandatory_depends_on": "by_amount"
   }
  ],
  "index_web_pages_for_search": 1,
@@ -221,7 +213,7 @@
    "link_fieldname": "custom_bulk_ref"
   }
  ],
- "modified": "2024-10-03 12:02:18.658177",
+ "modified": "2024-12-03 14:29:39.693599",
  "modified_by": "Administrator",
  "module": "Masar Ksa Hrms",
  "name": "Employee Incentive Bulk",
