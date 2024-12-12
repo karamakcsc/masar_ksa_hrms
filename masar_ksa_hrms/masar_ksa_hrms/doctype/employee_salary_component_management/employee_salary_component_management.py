@@ -283,12 +283,17 @@ class EmployeeSalaryComponentManagement(Document):
                         deduction_salary += sal.amount
         self.deduction_salary = deduction_salary
         self.basic_salary_with_allowance = salary_with_allowance
-        self.ss_salary = ss_salary
+        if self.ss_salary is None: 
+            self.ss_salary = ss_salary
+            return_ss_salary = ss_salary
+        else : 
+            return_ss_salary = self.ss_salary
+         
         self.eos_salary = eos_salary
         return {
             'deduction_salary':deduction_salary , 
             'basic_salary_with_allowance':salary_with_allowance,
-            'ss_salary': ss_salary,
+            'ss_salary': return_ss_salary,
             'eos_salary':eos_salary
         }
         
@@ -354,9 +359,9 @@ class EmployeeSalaryComponentManagement(Document):
                 "Basic salary cannot be zero. Please check and recalculate." , 
                 title = frappe._("Validation Error")
             )
-        if self.is_ss_applicable and self.ss_amount <=0:
+        if self.is_ss_applicable and self.ss_salary <=0:
            frappe.throw(
-               "Social Security amount cannot be zero. Please check and recalculate." , 
+               "Social Security Salary cannot be zero. Please check and recalculate." , 
                title = frappe._("Validation Error")
             )
         if self.is_housing_applicable and self.housing_amount <= 0:

@@ -353,7 +353,9 @@ fixtures = [
                 "Department-custom_eos_expenses", 
                 "Department-custom_column_break_v21bg", 
                 "Department-custom_eos_liabilities", 
-                "Department-custom_eos_cost_center"
+                "Department-custom_eos_cost_center", 
+                ### Employee Incentive
+                "Employee Incentive-custom_bulk_ref"
                 ]
         ]
     ]},
