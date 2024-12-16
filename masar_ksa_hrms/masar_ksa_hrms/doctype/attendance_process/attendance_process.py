@@ -611,11 +611,12 @@ class AttendanceProcess(Document):
 				to_date = datetime.strptime(str(self.to_date), '%Y-%m-%d').date()
 				employee_doc = frappe.get_doc('Employee' , self.employee )
 				company_doc = frappe.get_doc('Company' , self.company)
-				department_doc = frappe.get_doc('Department' , self.department)
+				if self.department:
+					department_doc = frappe.get_doc('Department' , self.department)
+					if department_doc.custom_salary_component:
+									sc_basic.append(department_doc.custom_salary_component)
 				if company_doc.custom_salary_component:
 					sc_basic.append(company_doc.custom_salary_component)
-				if department_doc.custom_salary_component:
-					sc_basic.append(department_doc.custom_salary_component)
 				if len(sc_basic) == 0:
 					frappe.throw(
          					f"Set Default Basic Salary in Company {str(self.comany)} in Salary Component or in Department :{str(self.department)}" ,

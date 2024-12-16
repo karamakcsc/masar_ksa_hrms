@@ -61,7 +61,7 @@ class ShortLeaveApplication(Document):
             new_leave_app_doc.from_date = self.leave_date
             new_leave_app_doc.to_date = self.leave_date
             new_leave_app_doc.total_leave_days = 1 
-            new_leave_app_doc.leave_approver = self.leave_approver
+            new_leave_app_doc.leave_approver = self.leave_approver if self.leave_approver else None
             new_leave_app_doc.posting_date = self.leave_date
             new_leave_app_doc.status ="Approved"
             new_leave_app_doc.custom_sla_reference = self.name 
@@ -149,14 +149,16 @@ class ShortLeaveApplication(Document):
                             <li><b> Balance Deduction </b></li>
                             <li><b> None Deduction </b></li> 
                         </ul>""" , title=_("Missing Deduction Type"))
+            return 
         if (self.shift_start +self.end_shift +self.in_shift) != 1:
-             frappe.throw("""At least one of the following must be selected:
+            frappe.throw("""At least one of the following must be selected:
                          <br>
                          <ul>
                             <li><b> Shift Start</b></li> 
                             <li><b> End Shift</b></li>
                             <li><b> In Shift </b></li> 
                         </ul>""" , title=_("Missing Leave Shift Type"))
+            return 
         if self.leave_duration and self.leave_duration > 0 :
             shift_time_sql = frappe.db.sql("""
                             SELECT 
@@ -172,22 +174,26 @@ class ShortLeaveApplication(Document):
                 to_time = datetime.strptime(str(self.to_time), time_format)
                 shift_start_time = datetime.strptime(str(shift_start_time), time_format)
                 shift_end_time = datetime.strptime(str(shift_end_time), time_format)
-                if self.leave_approver is None : 
+                hr_setting = frappe.get_doc('HR Settings')
+                leave_approver_mandatory_in_leave_application = hr_setting.leave_approver_mandatory_in_leave_application
+                if leave_approver_mandatory_in_leave_application and self.leave_approver is None : 
                     frappe.throw(
                         """No leave approver has been assigned for this Employee : {employee}.<br> 
                         Please assign a Leave Approver Before Proceeding.""".format(employee=self.employee),
                         title=_("Leave Approver Required")
                     )
+                    return
             if self.to_time:
                 if to_time > shift_end_time:
                     frappe.throw(
                     """The End Time of your Leave Cannot be Later than the Shift End Time.
                     <br> Please adjust the End Time to be Within the Shift Period.""" , title=_("Leave Time Error"))
-                
+                    return 
                 if from_time < shift_start_time:
                     frappe.throw(
                     """The Start Time of your Leave Cannot be Earlier than the Shift Start Time.<br> 
                     Please adjust the Start time to be within the Shift Period.""" , title=_("Leave Time Error"))
+                    return 
         else:
             frappe.throw("Leave duration cannot be zero. Please enter a valid leave duration." , title=_("Missing Leave Duration"))
                 

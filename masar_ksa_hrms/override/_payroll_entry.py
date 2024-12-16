@@ -29,8 +29,12 @@ from erpnext.accounts.doctype.accounting_dimension.accounting_dimension import (
 from erpnext.accounts.utils import get_fiscal_year
 
 from hrms.payroll.doctype.salary_withholding.salary_withholding import link_bank_entry_in_salary_withholdings
-
-
+### Mahmoud Override import
+from masar_ksa_hrms.custom.payroll_entry.payroll_entry import (
+												company_journal_entry ,
+												eos_provision_and_jv , 
+												department_validation
+										)
 class PayrollEntry(Document):
 	def onload(self):
 		if not self.docstatus == 1 or self.salary_slips_submitted:
@@ -55,6 +59,7 @@ class PayrollEntry(Document):
 			self.status = status
 
 	def before_submit(self):
+		department_validation(self=self) ##### Mahmoud Override Validation
 		self.validate_existing_salary_slips()
 		self.validate_payroll_payable_account()
 		if self.get_employees_with_unmarked_attendance():
@@ -611,10 +616,6 @@ class PayrollEntry(Document):
 
 
         ############################### Mahmoud Override 
-		from masar_ksa_hrms.custom.payroll_entry.payroll_entry import (
-												company_journal_entry ,
-												eos_provision_and_jv
-										)
 		company_journal_entry(self)
 		eos_provision_and_jv(self)
 		############################### End Override

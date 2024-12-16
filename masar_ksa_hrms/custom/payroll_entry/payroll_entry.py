@@ -3,6 +3,24 @@ from frappe import _
 from masar_ksa_hrms.masar_ksa_hrms.doctype.utils import group_by , eos_date_in_priod , eos_provision
 from frappe.query_builder.functions import Coalesce, Sum , Max
         
+        
+        
+        
+        
+        
+        
+def department_validation(self):
+        d = frappe.qb.DocType('Department')
+        exist_non_default_department = (
+                frappe.qb.from_(d).select(d.name).where(d.custom_eos_default_account == 0 or d.custom_ss_default_account == 0 )
+        ).run(as_dict = True)
+        if len(exist_non_default_department) !=0: 
+             for e in self.employees:
+                     if e.employee and (e.department is None):
+                            frappe.throw(
+                                        _("The Department for Employee {0} is Mandatory.").format(e.employee)
+                                )
+                                                        
 def company_journal_entry(self):
         """
 		Create a Journal Entry for the given payroll entry (Company Jouranl Entry).
@@ -25,14 +43,31 @@ def company_journal_entry(self):
                 rows=rows,
                 group= group
                 )
+def get_defualt_department(self):
+        d = frappe.qb.DocType('Department')
+        d_sql = frappe.qb.from_(d).select(d.name).where(d.name.isin([e.department for e in self.employees]))
+        eos_sql = d_sql.where(d.custom_eos_default_account == 1).run(as_dict = True)
+        ss_sql = d_sql.where(d.custom_ss_default_account == 1 ).run(as_dict = True )
+        eos_mandetory = True if len(eos_sql) != 0 else False 
+        ss_mandetoary  =  True if len(ss_sql) != 0 else False 
+        return { 'eos' : eos_mandetory , 'ss' : ss_mandetoary}
         
 def company_rate_and_accounts(self):
+        mandetory = get_defualt_department(self=self)
         condition = list()
         company_doc = frappe.get_doc('Company' , self.company)
         expenses = company_doc.custom_ss_expenses
 
         liabilities = company_doc.custom_ss_liabilities
-    
+        #### Mandetory 
+        if (mandetory['ss'] == True) and ((expenses is None) or (liabilities is None)): 
+                frappe.throw(
+                        _("""
+                        Some departments have a default value set. 
+                        Please ensure that there are corresponding expense and liability accounts for social security."""
+                        )
+                )
+
         sa_rate = company_doc.custom_comp_ss_sa_rate
 
         if sa_rate == 0 :
@@ -232,8 +267,25 @@ def eos_provision_and_jv(self):
         )
       
 
-def company_eos_accounts(company_name):
+def company_eos_accounts( self , company_name):
         company = frappe.get_doc('Company' , company_name)
+        mandetory = get_defualt_department(self=self)
+        if (
+                mandetory['eos'] == True  
+                and 
+                (
+                ( company.custom_end_of_service_expenses is None)
+                or 
+                ( company.custom_end_of_service_liabilities is None )
+                )):
+                    frappe.throw( 
+                                 _(
+                        """
+                        Some departments have a default value set. 
+                        Please ensure that there are corresponding expense and liability accounts for End od Service.
+                        """
+                        )
+                )
         return company.custom_end_of_service_expenses , company.custom_end_of_service_liabilities
 
 
@@ -423,38 +475,41 @@ def create_emp_eos_peroision(date , data):
 
 
 def create_eos_jv(self , rows):
-        default_expenses , default_liabilities =  company_eos_accounts(self.company) 
+        default_expenses , default_liabilities =  company_eos_accounts(self , self.company) 
         debit_lst = list()
         jv = frappe.new_doc('Journal Entry')
         jv.posting_date = self.posting_date
         jv.company = self.company 
         jv.user_remark = f"Payroll Entry is:{self.name} in the Posting Date :{self.posting_date} for Company End of Service."
         for c in rows:
-                """
-                        Credit for Employee End of Service (Company Amount).
+                if c.amount != 0 : 
                         
-                        "The End of Service value is calculated for eash employee to be allocated to employee and 
+                        """
+                                Credit for Employee End of Service (Company Amount).
+                                
+                                "The End of Service value is calculated for eash employee to be allocated to employee and 
 
-                        deducted from the company account."
+                                deducted from the company account."
 
-                """
-                cr_amount = round(c.amount , 2 )
-                debit_lst = debit_accounts_and_amounts_for_eos(
-                        debit_lst=debit_lst,
-                        new_amount=cr_amount,
-                        new_account=c.expenses,
-                        new_cost_center=c.cost_center
-                )
-                cr_account = jv.append('accounts' , {})
-                cr_account.account = c.liabilities
-                cr_account.credit_in_account_currency = cr_amount
-                cr_account.cost_center = c.cost_center
-                cr_account.party_type = "Employee"
-                cr_account.party =  c.employee
-                cr_account.reference_type = self.doctype
-                cr_account.reference_name = self.name
-                cr_account.reference_due_date = self.posting_date
-                cr_account.user_remark = f"""Reference type is Payroll Entry , Reference Name is {self.name} and Reference Due Date is :{self.posting_date} for Company End of Service.
+                        """
+                        cr_amount = round(c.amount , 2 )
+                        debit_lst = debit_accounts_and_amounts_for_eos(
+                                debit_lst=debit_lst,
+                                new_amount=cr_amount,
+                                new_account=c.expenses,
+                                new_cost_center=c.cost_center
+                        )
+                        cr_account = jv.append('accounts' , {})
+                        cr_account.account = c.liabilities
+                        cr_account.credit_in_account_currency = cr_amount
+                        cr_account.cost_center = c.cost_center
+                        cr_account.party_type = "Employee"
+                        cr_account.party =  c.employee
+                        cr_account.reference_type = self.doctype
+                        cr_account.reference_name = self.name
+                        cr_account.reference_due_date = self.posting_date
+                        cr_account.user_remark = f"""
+                        Reference type is Payroll Entry , Reference Name is {self.name} and Reference Due Date is :{self.posting_date} for Company End of Service.
                                         """
         if len(debit_lst) != 0 : 
                 for d in debit_lst:
@@ -468,7 +523,8 @@ def create_eos_jv(self , rows):
                                 dr_account.reference_type = self.doctype
                                 dr_account.reference_name = self.name
                                 dr_account.reference_due_date = self.posting_date
-                                dr_account.user_remark = f"""Reference Type is Payroll Entry , Reference Name is {self.name} and Reference Due Date is :{self.posting_date} for Company End of Service.
+                                dr_account.user_remark = f"""
+                Reference Type is Payroll Entry , Reference Name is {self.name} and Reference Due Date is :{self.posting_date} for Company End of Service.
                                                 """ 
         
         jv.save(ignore_permissions=True)

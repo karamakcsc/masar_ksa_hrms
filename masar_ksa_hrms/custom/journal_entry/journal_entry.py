@@ -20,14 +20,16 @@ def before_cancel(self , method):
                 if len(rows) != 0:
                     for row in rows:
                         try:
+                            total_amount = 0.0
                             frappe.delete_doc(pro , row.name)
                             eosp_doc = frappe.get_doc(eosp,row.parent)
                             child_len = len(eosp_doc.provisions)
                             for provision in eosp_doc.provisions:
                                 if provision.idx == child_len:
                                     total_amount = provision.provision
-                            eosp_doc.total_amount = total_amount
-                            eosp_doc.run_method('save')
+                            if total_amount not in [None , 0 ]:
+                                eosp_doc.total_amount = total_amount
+                                eosp_doc.run_method('save')
                         except Exception as ex : 
                             frappe.throw (f"Error Deleting Document {row.name} From {row.parent}: {str(ex)}")
                 break
