@@ -186,8 +186,8 @@ class AttendanceShortage(Document):
                         current_date -= timedelta(days=1)
 
                 elif self.is_bulk == 0 :
+                    salary_components_durations = {}
                     if len(self.attendance) != 0 :
-                        salary_components_durations = {}
                         balance_durations = {}
                         none_deduction = 0 
                         for att in self.attendance:

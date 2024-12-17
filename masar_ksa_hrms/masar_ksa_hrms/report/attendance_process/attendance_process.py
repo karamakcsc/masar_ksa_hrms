@@ -34,9 +34,10 @@ def data(filters):
 	)
     if filters.get('from') and filters.get('to'):
         query  = query.where(ap.posting_date.between(filters.get("from_date"), filters.get("to_date")) )
-    
-    query = query.where(ap.employee == filters.get('employee')) if filters.get('employee') else query=query
-    query = query.where(ap.department == filters.get('department')) if filters.get('department') else query=query
+    if filters.get('employee'):
+        query = query.where(ap.employee == filters.get('employee')) 
+    if filters.get('department'):
+        query = query.where(ap.department == filters.get('department'))
     return query.run()
 def columns():
     return [

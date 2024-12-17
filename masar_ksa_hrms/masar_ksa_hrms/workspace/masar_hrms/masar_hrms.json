@@ -1,6 +1,6 @@
 {
  "charts": [],
- "content": "[{\"id\":\"YY4lllD6Qn\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Masar HRMS</span>\",\"col\":12}},{\"id\":\"EjamG8B-iK\",\"type\":\"card\",\"data\":{\"card_name\":\"Deduction\",\"col\":4}},{\"id\":\"NwoeNuaZ5N\",\"type\":\"card\",\"data\":{\"card_name\":\"Incentive\",\"col\":4}},{\"id\":\"78iSMr35S6\",\"type\":\"card\",\"data\":{\"card_name\":\"Shift Management\",\"col\":4}},{\"id\":\"VjITrow-HZ\",\"type\":\"card\",\"data\":{\"card_name\":\"Master Data\",\"col\":4}},{\"id\":\"u7OTEPKScm\",\"type\":\"card\",\"data\":{\"card_name\":\"Types\",\"col\":4}},{\"id\":\"GJRawmiQjn\",\"type\":\"card\",\"data\":{\"card_name\":\"Bulk\",\"col\":4}},{\"id\":\"rEDKwOoik3\",\"type\":\"card\",\"data\":{\"card_name\":\"Reports\",\"col\":4}}]",
+ "content": "[{\"id\":\"YY4lllD6Qn\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Masar HRMS</span>\",\"col\":12}},{\"id\":\"EjamG8B-iK\",\"type\":\"card\",\"data\":{\"card_name\":\"Incentive & Deduction\",\"col\":4}},{\"id\":\"udAJ0f31k-\",\"type\":\"card\",\"data\":{\"card_name\":\"Types\",\"col\":4}},{\"id\":\"78iSMr35S6\",\"type\":\"card\",\"data\":{\"card_name\":\"End Of Service\",\"col\":4}},{\"id\":\"u7OTEPKScm\",\"type\":\"card\",\"data\":{\"card_name\":\"Payroll\",\"col\":4}},{\"id\":\"NwoeNuaZ5N\",\"type\":\"card\",\"data\":{\"card_name\":\"Overtime & Leaves\",\"col\":4}},{\"id\":\"GJRawmiQjn\",\"type\":\"card\",\"data\":{\"card_name\":\"Bulk\",\"col\":4}},{\"id\":\"VjITrow-HZ\",\"type\":\"card\",\"data\":{\"card_name\":\"Master Data\",\"col\":4}},{\"id\":\"rEDKwOoik3\",\"type\":\"card\",\"data\":{\"card_name\":\"Reports\",\"col\":4}}]",
  "creation": "2024-09-24 10:08:30.995825",
  "custom_blocks": [],
  "docstatus": 0,
@@ -16,78 +16,69 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Types",
-   "link_count": 2,
+   "label": "Reports",
+   "link_count": 6,
    "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
   },
   {
    "hidden": 0,
-   "is_query_report": 0,
-   "label": "Overtime Type",
+   "is_query_report": 1,
+   "label": "Attendance Process",
    "link_count": 0,
-   "link_to": "Overtime Type",
-   "link_type": "DocType",
+   "link_to": "Attendance Process",
+   "link_type": "Report",
    "onboard": 0,
    "type": "Link"
   },
   {
    "hidden": 0,
-   "is_query_report": 0,
-   "label": "Termination Type",
+   "is_query_report": 1,
+   "label": "Short Leave Application",
    "link_count": 0,
-   "link_to": "Termination Type",
-   "link_type": "DocType",
+   "link_to": "Short Leave Application",
+   "link_type": "Report",
    "onboard": 0,
    "type": "Link"
   },
   {
    "hidden": 0,
-   "is_query_report": 0,
-   "label": "Bulk",
-   "link_count": 4,
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Attendance Process Bulk",
+   "is_query_report": 1,
+   "label": "Employee Salary Component",
    "link_count": 0,
-   "link_to": "Attendance Process Bulk",
-   "link_type": "DocType",
+   "link_to": "Employee Salary Component",
+   "link_type": "Report",
    "onboard": 0,
    "type": "Link"
   },
   {
    "hidden": 0,
-   "is_query_report": 0,
-   "label": "Employee Shift Management Bulk",
+   "is_query_report": 1,
+   "label": "Employee Social Security Salary",
    "link_count": 0,
-   "link_to": "Employee Shift Management Bulk",
-   "link_type": "DocType",
+   "link_to": "Employee Social Security Salary",
+   "link_type": "Report",
    "onboard": 0,
    "type": "Link"
   },
   {
    "hidden": 0,
-   "is_query_report": 0,
-   "label": "Employee Deduction Bulk",
+   "is_query_report": 1,
+   "label": "Employee Salary Details",
    "link_count": 0,
-   "link_to": "Employee Deduction Bulk",
-   "link_type": "DocType",
+   "link_to": "Employee Salary Details",
+   "link_type": "Report",
    "onboard": 0,
    "type": "Link"
   },
   {
    "hidden": 0,
-   "is_query_report": 0,
-   "label": "Employee Incentive Bulk",
+   "is_query_report": 1,
+   "label": "Employee Salary Details - Trial",
    "link_count": 0,
-   "link_to": "Employee Incentive Bulk",
-   "link_type": "DocType",
+   "link_to": "Employee Salary Details - Trial",
+   "link_type": "Report",
    "onboard": 0,
    "type": "Link"
   },
@@ -95,7 +86,7 @@
    "hidden": 0,
    "is_query_report": 0,
    "label": "Master Data",
-   "link_count": 10,
+   "link_count": 11,
    "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
@@ -203,77 +194,18 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Reports",
-   "link_count": 6,
+   "label": "Employee Overtime and Leave",
+   "link_count": 0,
+   "link_to": "Employee Overtime and Leave",
    "link_type": "DocType",
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Attendance Process",
-   "link_count": 0,
-   "link_to": "Attendance Process",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Short Leave Application",
-   "link_count": 0,
-   "link_to": "Short Leave Application",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Employee Salary Component",
-   "link_count": 0,
-   "link_to": "Employee Salary Component",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Employee Social Security Salary",
-   "link_count": 0,
-   "link_to": "Employee Social Security Salary",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Employee Salary Details",
-   "link_count": 0,
-   "link_to": "Employee Salary Details",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Employee Salary Details - Trial",
-   "link_count": 0,
-   "link_to": "Employee Salary Details - Trial",
-   "link_type": "Report",
    "onboard": 0,
    "type": "Link"
   },
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Deduction",
-   "link_count": 2,
+   "label": "End Of Service",
+   "link_count": 3,
    "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
@@ -281,9 +213,9 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Employee Deduction",
+   "label": "End of Service Rate",
    "link_count": 0,
-   "link_to": "Employee Deduction",
+   "link_to": "End of Service Rate",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
@@ -291,9 +223,9 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Employee Deduction Bulk",
+   "label": "End of Service Calculator",
    "link_count": 0,
-   "link_to": "Employee Deduction Bulk",
+   "link_to": "End of Service Calculator",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
@@ -301,8 +233,18 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Incentive",
-   "link_count": 2,
+   "label": "End of Service Provision",
+   "link_count": 0,
+   "link_to": "End of Service Provision",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Incentive & Deduction",
+   "link_count": 4,
    "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
@@ -330,21 +272,31 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Shift Management",
-   "link_count": 3,
+   "label": "Employee Deduction",
+   "link_count": 0,
+   "link_to": "Employee Deduction",
    "link_type": "DocType",
    "onboard": 0,
-   "type": "Card Break"
+   "type": "Link"
   },
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Shift Assignment",
+   "label": "Employee Deduction Bulk",
    "link_count": 0,
-   "link_to": "Shift Assignment",
+   "link_to": "Employee Deduction Bulk",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Overtime & Leaves",
+   "link_count": 9,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
   },
   {
    "hidden": 0,
@@ -365,9 +317,246 @@
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Shift Assignment",
+   "link_count": 0,
+   "link_to": "Shift Assignment",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Leave Allocation",
+   "link_count": 0,
+   "link_to": "Leave Allocation",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Short Leave Application",
+   "link_count": 0,
+   "link_to": "Short Leave Application",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Employee Overtime and Leave",
+   "link_count": 0,
+   "link_to": "Employee Overtime and Leave",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Attendance Process",
+   "link_count": 0,
+   "link_to": "Attendance Process",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Attendance Process Bulk",
+   "link_count": 0,
+   "link_to": "Attendance Process Bulk",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Attendance Shortage",
+   "link_count": 0,
+   "link_to": "Attendance Shortage",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Payroll",
+   "link_count": 7,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Salary Component",
+   "link_count": 0,
+   "link_to": "Salary Component",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Salary Structure",
+   "link_count": 0,
+   "link_to": "Salary Structure",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Salary Structure Assignment",
+   "link_count": 0,
+   "link_to": "Salary Structure Assignment",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Bulk Salary Structure Assignment",
+   "link_count": 0,
+   "link_to": "Bulk Salary Structure Assignment",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Employee Salary Component Management",
+   "link_count": 0,
+   "link_to": "Employee Salary Component Management",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Payroll Entry",
+   "link_count": 0,
+   "link_to": "Payroll Entry",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Salary Slip",
+   "link_count": 0,
+   "link_to": "Salary Slip",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Bulk",
+   "link_count": 5,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Attendance Process Bulk",
+   "link_count": 0,
+   "link_to": "Attendance Process Bulk",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Employee Shift Management Bulk",
+   "link_count": 0,
+   "link_to": "Employee Shift Management Bulk",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Employee Deduction Bulk",
+   "link_count": 0,
+   "link_to": "Employee Deduction Bulk",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Employee Incentive Bulk",
+   "link_count": 0,
+   "link_to": "Employee Incentive Bulk",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Bulk Salary Structure Assignment",
+   "link_count": 0,
+   "link_to": "Bulk Salary Structure Assignment",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Types",
+   "link_count": 2,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Overtime Type",
+   "link_count": 0,
+   "link_to": "Overtime Type",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Termination Type",
+   "link_count": 0,
+   "link_to": "Termination Type",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2024-12-05 14:51:24.778470",
+ "modified": "2024-12-17 11:39:49.494591",
  "modified_by": "Administrator",
  "module": "Masar Ksa Hrms",
  "name": "Masar HRMS",

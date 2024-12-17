@@ -158,7 +158,7 @@
    "fieldname": "end_of_service_rate",
    "fieldtype": "Link",
    "label": "End of Service Rate",
-   "link_filters": "[[\"End of Service Rate\",\"employee\",\"=\",\"eval: doc.employee\"]]",
+   "link_filters": "[[\"End of Service Rate\",\"employee\",\"=\",\"eval: doc.employee\"],[\"End of Service Rate\",\"docstatus\",\"=\",\"1\"]]",
    "mandatory_depends_on": "eval:doc.eos_default_period == 0 ",
    "options": "End of Service Rate"
   }
@@ -166,7 +166,7 @@
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-10-03 11:57:51.166935",
+ "modified": "2024-12-17 10:26:44.593614",
  "modified_by": "Administrator",
  "module": "Masar Ksa Hrms",
  "name": "End of Service Calculator",

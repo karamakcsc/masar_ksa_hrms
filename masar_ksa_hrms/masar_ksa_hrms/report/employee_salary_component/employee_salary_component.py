@@ -32,9 +32,12 @@ def data(filters):
 	)
     if filters.get('from') and  filters.get('to'):
         query = query.where(schd.from_date.between(filters.get("from_date"), filters.get("to_date")))
-    query=query.where(e.employee == filters.get('employee')) if filters.get('employee') else query=query
-    query=query.where(schd.salary_component == filters.get('salary_component')) if filters.get('salary_component') else query=query
-    query=query.where(schd.is_active == filters.get('is_active')) if filters.get('is_active') else query=query
+    if filters.get('employee') :
+        query=query.where(e.employee == filters.get('employee'))
+    if filters.get('salary_component'):
+        query=query.where(schd.salary_component == filters.get('salary_component')) 
+    if filters.get('is_active'):
+        query=query.where(schd.is_active == filters.get('is_active'))
     return query.run()
 def columns():
     return [
