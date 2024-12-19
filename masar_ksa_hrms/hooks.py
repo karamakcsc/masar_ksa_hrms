@@ -138,11 +138,15 @@ doc_events = {
     },
     "Journal Entry": {
         "before_cancel":"masar_ksa_hrms.custom.journal_entry.journal_entry.before_cancel"
+    },
+    "Leave Application": {
+        "on_submit":"masar_ksa_hrms.custom.leave_application.leave_application.on_submit"
     }
 }
 doctype_js = {
     "Employee": "custom/employee/employee.js",
-    "Salary Component" :"custom/salary_component/salary_component.js"
+    "Salary Component" :"custom/salary_component/salary_component.js", 
+    "Leave Application" : "custom/leave_application/leave_application.js"
 }
 doctype_list_js = {
     "Attendance Shortage" : "masar_ksa_hrms/doctype/attendance_shortage/attendance_shortage_list.js"

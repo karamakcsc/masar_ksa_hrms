@@ -9,9 +9,12 @@ from frappe.query_builder.functions import  Sum
 class ShortLeaveApplication(Document):
 
     def on_submit(self):
+        self.status_validation()
         self.calculate_leave_application()
         
-        
+    def status_validation(self):
+        if self.status not in ['Approved' , 'Rejected']:
+            frappe.throw('''Only Leave Applications with status 'Approved' and 'Rejected' can be submitted''')
     def get_standard_working_hours_in_seconds(self):
             hr_settings_doc = frappe.get_doc('HR Settings')
             standard_working_hours = float(hr_settings_doc.standard_working_hours)
@@ -64,9 +67,9 @@ class ShortLeaveApplication(Document):
             new_leave_app_doc.leave_approver = self.leave_approver if self.leave_approver else None
             new_leave_app_doc.posting_date = self.leave_date
             new_leave_app_doc.status ="Approved"
-            new_leave_app_doc.custom_sla_reference = self.name 
             new_leave_app_doc.insert(ignore_permissions=True)
             new_leave_app_doc.submit()
+            frappe.db.set_value(new_leave_app_doc.doctype , new_leave_app_doc.name ,'custom_sla_reference',self.name )
             frappe.msgprint(
                 "The Leave Application has been Successfully Created and Submitted.",
                 alert=True,
